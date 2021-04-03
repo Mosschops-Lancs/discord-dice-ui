@@ -38,3 +38,21 @@
 .cthulhu-checkboxes-row {
 	margin-top: 20px;
 }
+
+.cthulhu-select-to-sheet__container {
+	display: flex;
+	justify-content: center;
+	border-top: 1px solid #bebebe;
+	margin-top: 5px;
+	padding-top: 10px;
+}
+
+.cthulhu-select-to-sheet__menu {
+	-webkit-column-count: 4;
+	-moz-column-count: 3;
+	column-count: 4;
+}
+
+.cthulhu-select-to-sheet__dropdown {
+	min-width: 350px;
+}

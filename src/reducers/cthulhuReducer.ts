@@ -1,15 +1,19 @@
 import {
 	CLOSE_CTHULHU_MODAL,
 	CLOSE_CTHULHU_RESULTS_MODAL,
-	CTHULHU_DICE_ROLLED, CTHULHU_PUSH_ROLL_REQESTED,
-	OPEN_CTHULHU_MODAL
+	CLOSE_CTHULHU_SHEET_MODAL,
+	CTHULHU_DICE_ROLLED,
+	CTHULHU_PUSH_ROLL_REQESTED,
+	OPEN_CTHULHU_MODAL,
+	OPEN_CTHULHU_SHEET_MODAL
 } from "../actions/cthulhu.actions";
 
 const initialState = {
 	results: {},
 	isPushed: false,
 	showModal: false,
-	showResultsModal: false
+	showResultsModal: false,
+	showCthulhuSheetModal: false,
 };
 
 function cthulhuReducer(state = initialState, action: any) {
@@ -40,6 +44,16 @@ function cthulhuReducer(state = initialState, action: any) {
 			return {
 				...state,
 				showResultsModal: false
+			}
+		case OPEN_CTHULHU_SHEET_MODAL:
+			return {
+				...state,
+				showCthulhuSheetModal: true
+			}
+		case CLOSE_CTHULHU_SHEET_MODAL:
+			return {
+				...state,
+				showCthulhuSheetModal: false
 			}
 	}
 	return state;

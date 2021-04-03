@@ -1,0 +1,26 @@
+.headerIcon {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 15px;
+    grid-row-gap: 4px;
+}
+
+.containerBonusDice {
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid lightgray;
+}
+
+.bonusDiceLeft {
+    margin-right: 15px;
+}
+
+.bonusDiceLabel {
+    padding: 5px;
+}

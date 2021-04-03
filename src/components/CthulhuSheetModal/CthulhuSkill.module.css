@@ -1,0 +1,66 @@
+.container {
+    display: flex;
+}
+
+.containerMain {
+
+}
+
+.containerLabel {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    flex: 1;
+    text-align: left;
+}
+
+.containerDerived {
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    text-align: center;
+}
+
+.inputMain {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #bebebe;
+    font-size: 110%;
+}
+
+.inputDerived {
+    width: 35px;
+    height: 25px;
+    font-size: 90%;
+    border: 1px solid #bebebe;
+    border-left: 0;
+}
+
+.inputTop {
+    border-top-right-radius: 10px;
+    border-bottom: 0;
+}
+
+.die {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dieImg {
+    width: 75%;
+    filter: grayscale(1);
+}
+
+.container:hover .dieImg {
+    filter: grayscale(0);
+}
+
+.container:hover {
+    background: #fafafa;
+}
