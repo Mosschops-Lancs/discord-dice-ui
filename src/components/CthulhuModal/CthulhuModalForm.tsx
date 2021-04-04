@@ -5,12 +5,18 @@ import Form from 'react-bootstrap/Form';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import Col from 'react-bootstrap/Col';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPercent } from '@fortawesome/free-solid-svg-icons';
+import { faPercent, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './CthulhuModalForm.css';
 import InputRange from "../InputRange/InputRange";
-import cthulhuSkillsList from "../CthulhuSheetModal/cthulhuSkillsList";
+import cthulhuSkillsList, { getSkillById, SkillType } from "../CthulhuSheetModal/cthulhuSkillsList";
 
-const percentIcon = <span className="percent-icon"><FontAwesomeIcon icon={faPercent} /></span>;
+const PercentIcon = () => (
+	<span className="percent-icon"><FontAwesomeIcon icon={faPercent} /></span>
+);
+
+const TimesIcon = ({ onClick }: { onClick: (e: any) => void }) => (
+	<span className="cthulhu-select-to-sheet__times-icon" onClick={onClick}><FontAwesomeIcon icon={faTimes} /></span>
+);
 
 // @ts-ignore
 const createRenderer = render => ({ input, label, id, textMuted, meta, disabled }, ...rest) => {
@@ -37,7 +43,7 @@ const renderInput = createRenderer((input, label, id, textMuted, meta, disabled)
 					isInvalid ={hasError}
 					{...input}
 				/>
-				{ percentIcon }
+				<PercentIcon />
 			</div>
 			{ hasError && <Form.Control.Feedback type="invalid">{ error }</Form.Control.Feedback> }
 			{ textMuted && <Form.Text className="text-muted">{ textMuted }</Form.Text> }
@@ -70,10 +76,9 @@ function CthulhuModalForm({
 	submitFailed,
 	handleSubmit,
 	specialDie,
-	skill
+	skillId = ''
 }: any) {
 	const { cthulhuBonus, cthulhuTwoBonus, cthulhuPenalty, cthulhuTwoPenalty } = specialDie;
-	console.log('skill prop ', )
 	const rangeId = 'cthulhu-skill-range';
 
 	const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => change('skillLevel', event.target.value);
@@ -84,11 +89,18 @@ function CthulhuModalForm({
 			skillRange.value = event.target.value;
 		}
 	};
-	const handleSkillChange = (event: any, skillId: string) => {
+
+	const handleSkillChange = (event: any, id: string) => {
 		event.preventDefault();
-		console.log('handleSkillChange', skillId)
-		change('skill', skillId)
+		change('skillId', id)
 	};
+
+	const clearSkill = (event: any) => {
+		event.preventDefault();
+		change('skillId', '')
+	};
+
+	const selectedSkill = getSkillById(skillId);
 
 	return (
 		<Form
@@ -141,19 +153,20 @@ function CthulhuModalForm({
 				</Form.Group>
 			</Form.Row>
 			<section className="cthulhu-select-to-sheet__container">
-				<input type="hidden" name="skill" id="skill" value={skill} />
+				<input type="hidden" name="skillId" id="skillId" value={skillId} />
 				<Dropdown>
 					<Dropdown.Toggle variant="outline-primary" id="cthulhu-select-to-sheet-dropdown" className="cthulhu-select-to-sheet__dropdown">
-						<span>{skill || "Select a Skill to save to the Character Sheet"}</span>
+						<span>{selectedSkill?.name || "Select a Skill to save to the Character Sheet"}</span>
 					</Dropdown.Toggle>
 					<Dropdown.Menu className="cthulhu-select-to-sheet__menu">
 						{
-							cthulhuSkillsList.map(skill => (
-								<Dropdown.Item href="#" onClick={(e) => handleSkillChange(e, skill)}>{skill}</Dropdown.Item>
+							cthulhuSkillsList.map((skill: SkillType) => (
+								<Dropdown.Item href="#" onClick={(e) => handleSkillChange(e, skill.id)}>{skill.name}</Dropdown.Item>
 							))
 						}
 					</Dropdown.Menu>
 				</Dropdown>
+				<TimesIcon onClick={clearSkill}/>
 			</section>
 		</Form>
 	);
@@ -198,7 +211,7 @@ const FormElement = reduxForm({
 const selector = formValueSelector(form);
 
 export default connect(state => ({
-	skill: selector(state, 'skill'),
+	skillId: selector(state, 'skillId'),
 	specialDie: selector(
 		state,
 		'cthulhuBonus',

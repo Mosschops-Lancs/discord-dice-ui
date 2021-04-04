@@ -2,6 +2,10 @@
     display: flex;
 }
 
+.noValue {
+    opacity: .7;
+}
+
 .containerMain {
 
 }

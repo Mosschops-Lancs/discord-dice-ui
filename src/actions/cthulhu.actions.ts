@@ -6,6 +6,7 @@ export const CTHULHU_DICE_ROLLED = 'CTHULHU_DICE_ROLLED';
 export const CLOSE_CTHULHU_RESULTS_MODAL = 'CLOSE_CTHULHU_RESULTS_MODAL';
 export const OPEN_CTHULHU_SHEET_MODAL = 'OPEN_CTHULHU_SHEET_MODAL';
 export const CLOSE_CTHULHU_SHEET_MODAL = 'CLOSE_CTHULHU_SHEET_MODAL';
+export const CTHULHU_UPDATE_SKILL_VALUE = 'CTHULHU_UPDATE_SKILL_VALUE';
 
 export function openCthulhuModal() {
 	return {
@@ -54,5 +55,12 @@ export function openCthulhuSheetModal() {
 export function closeCthulhuSheetModal() {
 	return {
 		type: CLOSE_CTHULHU_SHEET_MODAL
+	}
+}
+
+export function cthulhuSkillValueEntered(payload: {skillId: string, value: number}) {
+	return {
+		type: CTHULHU_UPDATE_SKILL_VALUE,
+		payload
 	}
 }

@@ -56,3 +56,21 @@
 .cthulhu-select-to-sheet__dropdown {
 	min-width: 350px;
 }
+
+.cthulhu-select-to-sheet__times-icon {
+	width: 45px;
+	height: 35px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	padding-top: 5px;
+	color: #252525;
+	font-size: 19px;
+	opacity: 0.5;
+	transition: .2s;
+}
+
+.cthulhu-select-to-sheet__times-icon:hover {
+	opacity: 1;
+}
