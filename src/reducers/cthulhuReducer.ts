@@ -7,10 +7,19 @@ import {
 	CTHULHU_PUSH_ROLL_REQESTED,
 	OPEN_CTHULHU_MODAL,
 	OPEN_CTHULHU_SHEET_MODAL,
-	CTHULHU_UPDATE_SKILL_VALUE
+	CTHULHU_UPDATE_SHEET
 } from "../actions/cthulhu.actions";
 
-const initialState = {
+interface initialStateType {
+	results: any,
+	isPushed: boolean,
+	showModal: boolean,
+	showResultsModal: boolean,
+	showCthulhuSheetModal: boolean,
+	characterSheet: { [key: string]: string }
+}
+
+const initialState: initialStateType = {
 	results: {},
 	isPushed: false,
 	showModal: false,
@@ -37,12 +46,12 @@ function cthulhuReducer(state = initialState, action: any) {
 				...state,
 				showModal: false
 			};
-		case CTHULHU_ROLL_REQESTED:
-		case CTHULHU_UPDATE_SKILL_VALUE: {
+		case CTHULHU_ROLL_REQESTED: {
 			if (action.payload.skillId) {
-				const characterSheetUpdated = {...initialState.characterSheet};
-				// @ts-ignore
+				const characterSheetUpdated = {...state.characterSheet};
+
 				characterSheetUpdated[action.payload.skillId] = action.payload.skillLevel;
+
 				return {
 					...state,
 					characterSheet: {
@@ -52,6 +61,12 @@ function cthulhuReducer(state = initialState, action: any) {
 			}
 			break;
 		}
+		case CTHULHU_UPDATE_SHEET:
+			return {
+				...state,
+				characterSheet: action.payload,
+				showCthulhuSheetModal: false
+			};
 		case CTHULHU_DICE_ROLLED:
 			return {
 				...state,

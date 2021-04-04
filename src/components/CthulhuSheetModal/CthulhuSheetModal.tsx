@@ -6,47 +6,90 @@ import Button from 'react-bootstrap/Button';
 import styles from "./CthulhuSheetModal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileInvoice } from '@fortawesome/free-solid-svg-icons';
-import { closeCthulhuSheetModal, cthulhuSkillValueEntered } from "../../actions/cthulhu.actions";
+import { closeCthulhuSheetModal, cthulhuSheetUpdateRequested, requestCthulhuRoll } from "../../actions/cthulhu.actions";
 import cthulhuSkillsList, { SkillType } from './cthulhuSkillsList';
 import CthulhuSkill from "./CthulhuSkill";
 
+function Checkbox({ name, label, onChange, isDisabled }: any) {
+	return (
+		<div className={styles.checkbox__container}>
+			<input
+				type="checkbox"
+				name={name}
+				id={name}
+				disabled={isDisabled}
+				className={classNames({
+					[styles.checkbox__input]: true,
+					[styles['checkbox--disabled']]: isDisabled
+				})}
+				onChange={(e) => onChange(e, name)}
+			/>
+			<label
+				className={classNames({
+					[styles.checkbox__Label]: true,
+					[styles['checkbox--disabled']]: isDisabled
+				})}
+				htmlFor={name}
+			>{label}</label>
+		</div>
+	);
+}
+
 function CthulhuSheetModal() {
 	const dispatch = useDispatch();
-	const [state, setState] = useState({});
+	const [sheetState, setSheetState] = useState({});
+	const [bonusState, setBonusState] = useState('');
 	const hideModal = () => dispatch(closeCthulhuSheetModal());
 	const cthulhuState = useSelector(({ cthulhuState }: any) => cthulhuState);
 	const { showCthulhuSheetModal, characterSheet } = cthulhuState;
 
-	useEffect(() => {
-		setState(characterSheet)
-	}, [characterSheet, showCthulhuSheetModal])
-	
-	console.log('characterSheet', cthulhuState);
+	const CTHULHU_BONUS = 'CTHULHU_BONUS';
+	const CTHULHU_TWO_BONUS = 'CTHULHU_TWO_BONUS';
+	const CTHULHU_PENALTY = 'CTHULHU_PENALTY';
+	const CTHULHU_TWO_PENALTY = 'CTHULHU_TWO_PENALTY';
 
-	const getValueById = (id: string) => {
-		// @ts-ignore
-		return state[id] || 0;
-	};
+	useEffect(() => {
+		setSheetState(characterSheet);
+		setBonusState('');
+	}, [characterSheet, showCthulhuSheetModal])
+
+	// @ts-ignore
+	const getValueById = (id: string) => sheetState[id] || 0;
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = Number(event.target.value);
 
 		if (!isNaN(value)) {
-			setState({
-				...state,
+			setSheetState({
+				...sheetState,
 				[event.target.name]: value
 			});
 		}
-
-		// if (!isNaN(value)) {
-		// 	cthulhuSkillValueEntered({
-		// 		skillId: event.target.name,
-		// 		value
-		// 	})
-		// }
 	};
 
-	const saveChanges = () => {
+	const saveChanges = () => dispatch(cthulhuSheetUpdateRequested(sheetState));
+
+	const submitRoll = (value: number, skillId: string) => {
+		if (value) {
+			dispatch(requestCthulhuRoll({
+				cthulhuBonus: bonusState === CTHULHU_BONUS,
+				cthulhuTwoBonus: bonusState === CTHULHU_TWO_BONUS,
+				cthulhuPenalty: bonusState === CTHULHU_PENALTY,
+				cthulhuTwoPenalty: bonusState === CTHULHU_TWO_PENALTY,
+				skillLevel: value,
+				skillId
+			}));
+
+			hideModal();
+		}
+	};
+
+	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
+		if (event.target.checked) {
+			setBonusState(name);
+		} else {
+			setBonusState('');
+		}
 	};
 
 	return (
@@ -61,38 +104,45 @@ function CthulhuSheetModal() {
 			<Modal.Body>
 				<div className={styles.containerBonusDice}>
 					<div className={styles.bonusDiceLeft}>
-						<div>
-							<input type="checkbox"/>
-							<span className={styles.bonusDiceLabel}>Apply <strong>one</strong> Bonus Die</span>
-						</div>
-						<div>
-							<input type="checkbox"/>
-							<span className={styles.bonusDiceLabel}>Apply <strong>two</strong> Bonus Dice</span>
-						</div>
+						<Checkbox
+							name={CTHULHU_BONUS}
+							isDisabled={bonusState && bonusState !== CTHULHU_BONUS}
+							label={<>Apply <strong>one</strong> Bonus Die</>}
+							onChange={handleCheckboxChange}
+						/>
+						<Checkbox
+							name={CTHULHU_TWO_BONUS}
+							isDisabled={bonusState && bonusState !== CTHULHU_TWO_BONUS}
+							label={<>Apply <strong>two</strong> Bonus Dice</>}
+							onChange={handleCheckboxChange}
+						/>
 					</div>
 					<div>
-						<div>
-							<input type="checkbox"/>
-							<span className={styles.bonusDiceLabel}>Apply <strong>one</strong> Penalty Die</span>
-						</div>
-						<div>
-							<input type="checkbox"/>
-							<span className={styles.bonusDiceLabel}>Apply <strong>two</strong> Penalty Dice</span>
-						</div>
+						<Checkbox
+							name={CTHULHU_PENALTY}
+							isDisabled={bonusState && bonusState !== CTHULHU_PENALTY}
+							label={<>Apply <strong>one</strong> Penalty Die</>}
+							onChange={handleCheckboxChange}
+						/>
+						<Checkbox
+							name={CTHULHU_TWO_PENALTY}
+							isDisabled={bonusState && bonusState !== CTHULHU_TWO_PENALTY}
+							label={<>Apply <strong>two</strong> Penalty Dice</>}
+							onChange={handleCheckboxChange}
+						/>
 					</div>
 				</div>
-				<div className={styles.list}>
-					{
-						cthulhuSkillsList.map((skill: SkillType) => (
-							<CthulhuSkill
-								name={skill.name}
-								skillId={skill.id}
-								value={getValueById(skill.id)}
-								onChange={handleChange}
-							/>
-						))
-					}
-				</div>
+				<div className={styles.list}> {
+					cthulhuSkillsList.map((skill: SkillType) => (
+						<CthulhuSkill
+							name={skill.name}
+							skillId={skill.id}
+							value={getValueById(skill.id)}
+							onChange={handleChange}
+							submitRoll={submitRoll}
+						/>
+					))
+				} </div>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button

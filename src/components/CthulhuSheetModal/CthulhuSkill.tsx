@@ -8,9 +8,10 @@ interface SkillProps {
 	skillId: string;
 	value: number;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	submitRoll: (value: number, skillId: string) => void;
 }
 
-function CthulhuSkill({ name, skillId, value, onChange } : SkillProps) {
+function CthulhuSkill({ name, skillId, value, onChange, submitRoll } : SkillProps) {
 	const halfValue = Math.floor(value / 2);
 	const oneFifthValue = Math.floor(value / 5);
 
@@ -19,8 +20,12 @@ function CthulhuSkill({ name, skillId, value, onChange } : SkillProps) {
 			[styles.container]: true,
 			[styles.noValue]: !value
 		})}>
-			<div className={styles.die}>
-				<img className={styles.dieImg} src={dieImg} alt="d100" />
+			<div className={styles.die} role="button" onClick={_ => submitRoll(value, skillId)}>
+				<img
+					className={styles.dieImg}
+					src={dieImg}
+					alt="d100"
+				/>
 			</div>
 			<div className={styles.containerLabel}>
 				<span>{name}</span>
@@ -32,18 +37,19 @@ function CthulhuSkill({ name, skillId, value, onChange } : SkillProps) {
 					value={value || ''}
 					className={classNames([styles.input, styles.inputMain])}
 					onChange={e => onChange(e)}
+					autoComplete="off"
 				/>
 			</div>
 			<div className={styles.containerDerived}>
 				<input
 					type="text"
 					disabled
-					value={halfValue || ''}
+					value={value ? halfValue : ''}
 					className={classNames([styles.input, styles.inputDerived, styles.inputTop])} />
 				<input
 					type="text"
 					disabled
-					value={oneFifthValue || ''}
+					value={value ? oneFifthValue : ''}
 					className={classNames([styles.input, styles.inputDerived])} />
 			</div>
 		</div>

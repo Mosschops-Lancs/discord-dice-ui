@@ -5,22 +5,63 @@
 
 .list {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-column-gap: 15px;
     grid-row-gap: 4px;
 }
 
+.containerCheckbox {
+    cursor: pointer;
+}
+
 .containerBonusDice {
-    display: flex;
-    margin-bottom: 10px;
+    display: block;
+    margin-bottom: 8px;
     padding-bottom: 5px;
     border-bottom: 1px solid lightgray;
 }
 
 .bonusDiceLeft {
-    margin-right: 15px;
+    margin-right: 25px;
 }
 
-.bonusDiceLabel {
-    padding: 5px;
+.checkbox__input {
+    margin-right: 5px;
+    cursor: pointer;
 }
+
+.checkbox__Label {
+    cursor: pointer;
+    margin-bottom: 6px;
+}
+
+.checkbox--disabled {
+    cursor: not-allowed;
+}
+
+@media only screen and (min-width: 480px) {
+    .list {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .containerBonusDice {
+        display: flex;
+    }
+
+    .checkbox__Label {
+        margin-bottom: 1px;
+    }
+}
+
+@media only screen and (min-width: 960px) {
+    .list {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media only screen and (min-width: 1180px) {
+    .list {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
