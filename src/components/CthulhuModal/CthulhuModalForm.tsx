@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dropdown } from "react-bootstrap";
+import classNames from 'classnames';
 import Form from 'react-bootstrap/Form';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import Col from 'react-bootstrap/Col';
@@ -154,17 +155,24 @@ function CthulhuModalForm({
 			</Form.Row>
 			<section className="cthulhu-select-to-sheet__container">
 				<input type="hidden" name="skillId" id="skillId" value={skillId} />
-				<Dropdown>
-					<Dropdown.Toggle variant="outline-primary" id="cthulhu-select-to-sheet-dropdown" className="cthulhu-select-to-sheet__dropdown">
-						<span>{selectedSkill?.name || "Select a Skill to save to the Character Sheet"}</span>
+				<Dropdown className="cthulhu-select-to-sheet__dropdown">
+					<Dropdown.Toggle
+						variant="outline-secondary"
+						id="cthulhu-select-to-sheet-dropdown"
+						className="cthulhu-select-to-sheet__button"
+					>
+						<span>{selectedSkill?.name || "Save a Skill to the Character Sheet"}</span>
 					</Dropdown.Toggle>
-					<Dropdown.Menu className="cthulhu-select-to-sheet__menu">
-						{
-							cthulhuSkillsList.map((skill: SkillType) => (
-								<Dropdown.Item href="#" onClick={(e) => handleSkillChange(e, skill.id)}>{skill.name}</Dropdown.Item>
-							))
-						}
-					</Dropdown.Menu>
+					<Dropdown.Menu className="cthulhu-select-to-sheet__menu"> {
+						cthulhuSkillsList.map(({ id, name }: SkillType) => (
+							<Dropdown.Item
+								href="#"
+								className={classNames({
+									'cthulhu-select-to-sheet__menu--selected': skillId && skillId === id
+								})}
+								onClick={(e) => handleSkillChange(e, id)}>{name}</Dropdown.Item>
+						))
+					} </Dropdown.Menu>
 				</Dropdown>
 				<TimesIcon onClick={clearSkill}/>
 			</section>

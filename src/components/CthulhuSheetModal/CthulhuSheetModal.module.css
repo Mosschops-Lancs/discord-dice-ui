@@ -4,10 +4,9 @@
 }
 
 .list {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-column-gap: 15px;
-    grid-row-gap: 4px;
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
 }
 
 .containerCheckbox {
@@ -40,10 +39,6 @@
 }
 
 @media only screen and (min-width: 480px) {
-    .list {
-        grid-template-columns: 1fr 1fr;
-    }
-
     .containerBonusDice {
         display: flex;
     }
@@ -55,13 +50,17 @@
 
 @media only screen and (min-width: 960px) {
     .list {
-        grid-template-columns: 1fr 1fr 1fr;
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
     }
 }
 
 @media only screen and (min-width: 1180px) {
     .list {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
     }
 }
 

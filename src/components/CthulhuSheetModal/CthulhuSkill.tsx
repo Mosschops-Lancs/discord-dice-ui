@@ -28,7 +28,7 @@ function CthulhuSkill({ name, skillId, value, onChange, submitRoll } : SkillProp
 				/>
 			</div>
 			<div className={styles.containerLabel}>
-				<span>{name}</span>
+				<span className={styles.skillName}>{name}</span>
 			</div>
 			<div className={styles.containerMain}>
 				<input

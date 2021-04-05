@@ -19,20 +19,25 @@
     flex-direction: column;
 }
 
+.skillName {
+    line-height: 15px;
+    font-size: 15px;
+}
+
 .input {
     text-align: center;
 }
 
 .inputMain {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border: 1px solid #bebebe;
     font-size: 110%;
 }
 
 .inputDerived {
-    width: 35px;
-    height: 25px;
+    width: 30px;
+    height: 20px;
     font-size: 90%;
     border: 1px solid #bebebe;
     border-left: 0;
@@ -44,8 +49,8 @@
 }
 
 .die {
-    width: 50px;
-    height: 50px;
+    width: 43px;
+    height: 43px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,7 +58,7 @@
 }
 
 .dieImg {
-    width: 75%;
+    width: 85%;
     filter: grayscale(1);
 }
 
