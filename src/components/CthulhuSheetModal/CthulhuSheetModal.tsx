@@ -52,7 +52,6 @@ function CthulhuSheetModal() {
 	const CTHULHU_TWO_PENALTY = 'CTHULHU_TWO_PENALTY';
 
 	useEffect(() => {
-		console.log('useEffect 2');
 		setSheetState(characterSheet);
 		setBonusState('');
 	}, [characterSheet, showCthulhuSheetModal]);
