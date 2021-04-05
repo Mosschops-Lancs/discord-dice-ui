@@ -9,6 +9,7 @@ import {
 	OPEN_CTHULHU_SHEET_MODAL,
 	CTHULHU_UPDATE_SHEET
 } from "../actions/cthulhu.actions";
+import localStorageCthulhuSheetManager from "../components/CthulhuSheetModal/utils/localStorageCthulhuSheetManager";
 
 interface initialStateType {
 	results: any,
@@ -52,6 +53,9 @@ function cthulhuReducer(state = initialState, action: any) {
 
 				characterSheetUpdated[action.payload.skillId] = action.payload.skillLevel;
 
+				// Update local storage
+				localStorageCthulhuSheetManager.save(characterSheetUpdated);
+
 				return {
 					...state,
 					characterSheet: {
@@ -62,6 +66,9 @@ function cthulhuReducer(state = initialState, action: any) {
 			break;
 		}
 		case CTHULHU_UPDATE_SHEET:
+			// Update local storage
+			localStorageCthulhuSheetManager.save(action.payload);
+
 			return {
 				...state,
 				characterSheet: action.payload,

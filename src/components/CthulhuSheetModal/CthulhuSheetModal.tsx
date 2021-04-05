@@ -39,8 +39,11 @@ function CthulhuSheetModal() {
 	const dispatch = useDispatch();
 	const [sheetState, setSheetState] = useState({});
 	const [bonusState, setBonusState] = useState('');
+
 	const hideModal = () => dispatch(closeCthulhuSheetModal());
+	const updateSheet = (st : any) => dispatch(cthulhuSheetUpdateRequested(st));
 	const cthulhuState = useSelector(({ cthulhuState }: any) => cthulhuState);
+
 	const { showCthulhuSheetModal, characterSheet } = cthulhuState;
 
 	const CTHULHU_BONUS = 'CTHULHU_BONUS';
@@ -49,9 +52,10 @@ function CthulhuSheetModal() {
 	const CTHULHU_TWO_PENALTY = 'CTHULHU_TWO_PENALTY';
 
 	useEffect(() => {
+		console.log('useEffect 2');
 		setSheetState(characterSheet);
 		setBonusState('');
-	}, [characterSheet, showCthulhuSheetModal])
+	}, [characterSheet, showCthulhuSheetModal]);
 
 	// @ts-ignore
 	const getValueById = (id: string) => sheetState[id] || 0;
@@ -67,7 +71,7 @@ function CthulhuSheetModal() {
 		}
 	};
 
-	const saveChanges = () => dispatch(cthulhuSheetUpdateRequested(sheetState));
+	const saveChanges = () => updateSheet(sheetState);
 
 	const submitRoll = (value: number, skillId: string) => {
 		if (value) {
@@ -135,6 +139,7 @@ function CthulhuSheetModal() {
 				<div className={styles.list}> {
 					cthulhuSkillsList.map((skill: SkillType) => (
 						<CthulhuSkill
+							key={skill.id}
 							name={skill.name}
 							skillId={skill.id}
 							value={getValueById(skill.id)}

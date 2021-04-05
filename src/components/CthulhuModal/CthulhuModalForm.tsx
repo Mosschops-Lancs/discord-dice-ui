@@ -166,6 +166,7 @@ function CthulhuModalForm({
 					<Dropdown.Menu className="cthulhu-select-to-sheet__menu"> {
 						cthulhuSkillsList.map(({ id, name }: SkillType) => (
 							<Dropdown.Item
+								key={id}
 								href="#"
 								className={classNames({
 									'cthulhu-select-to-sheet__menu--selected': skillId && skillId === id
