@@ -6,7 +6,8 @@ export const CTHULHU_DICE_ROLLED = 'CTHULHU_DICE_ROLLED';
 export const CLOSE_CTHULHU_RESULTS_MODAL = 'CLOSE_CTHULHU_RESULTS_MODAL';
 export const OPEN_CTHULHU_SHEET_MODAL = 'OPEN_CTHULHU_SHEET_MODAL';
 export const CLOSE_CTHULHU_SHEET_MODAL = 'CLOSE_CTHULHU_SHEET_MODAL';
-export const CTHULHU_UPDATE_SHEET = 'CTHULHU_UPDATE_SHEET';
+export const CTHULHU_UPDATE_SKILLS = 'CTHULHU_UPDATE_SKILLS';
+export const CTHULHU_UPDATE_ATTRIBUTES = 'CTHULHU_UPDATE_ATTRIBUTES';
 
 export function openCthulhuModal() {
 	return {
@@ -58,9 +59,16 @@ export function closeCthulhuSheetModal() {
 	};
 }
 
-export function cthulhuSheetUpdateRequested(payload: any) {
+export function cthulhuSkillsUpdateRequested(payload: any) {
 	return {
-		type: CTHULHU_UPDATE_SHEET,
+		type: CTHULHU_UPDATE_SKILLS,
+		payload
+	};
+}
+
+export function cthulhuAttributesUpdateRequested(payload: any) {
+	return {
+		type: CTHULHU_UPDATE_ATTRIBUTES,
 		payload
 	};
 }

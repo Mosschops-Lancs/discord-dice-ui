@@ -7,9 +7,13 @@ import {
 	CTHULHU_PUSH_ROLL_REQESTED,
 	OPEN_CTHULHU_MODAL,
 	OPEN_CTHULHU_SHEET_MODAL,
-	CTHULHU_UPDATE_SHEET
+	CTHULHU_UPDATE_SKILLS,
+	CTHULHU_UPDATE_ATTRIBUTES
 } from "../actions/cthulhu.actions";
-import localStorageCthulhuSheetManager from "../components/CthulhuSheetModal/utils/localStorageCthulhuSheetManager";
+import localStorageCthulhuSkillsManager from "../components/CthulhuSheetModal/utils/localStorageCthulhuSkillsManager";
+import localStorageCthulhuAttributesManager
+	from "../components/CthulhuSheetModal/utils/localStorageCthulhuAttributesManager";
+import { getAttributeById } from "../components/CthulhuSheetModal/utils/cthulhuAttributesList";
 
 interface initialStateType {
 	results: any,
@@ -17,7 +21,8 @@ interface initialStateType {
 	showModal: boolean,
 	showResultsModal: boolean,
 	showCthulhuSheetModal: boolean,
-	characterSheet: { [key: string]: string }
+	skills: { [key: string]: string }
+	attributes: { [key: string]: string }
 }
 
 const initialState: initialStateType = {
@@ -26,7 +31,8 @@ const initialState: initialStateType = {
 	showModal: false,
 	showResultsModal: false,
 	showCthulhuSheetModal: false,
-	characterSheet: {}
+	skills: {},
+	attributes: {}
 };
 
 function cthulhuReducer(state = initialState, action: any) {
@@ -48,31 +54,43 @@ function cthulhuReducer(state = initialState, action: any) {
 				showModal: false
 			};
 		case CTHULHU_ROLL_REQESTED: {
-			if (action.payload.skillId) {
-				const characterSheetUpdated = {...state.characterSheet};
+			const { skillId : id, skillLevel } = action.payload;
+			if (id) {
+				const isAttribute = !!getAttributeById(id);
 
-				characterSheetUpdated[action.payload.skillId] = action.payload.skillLevel;
+				if (isAttribute) {
+					const attributesUpdated = {...state.attributes};
+					attributesUpdated[id] = skillLevel;
 
-				// Update local storage
-				localStorageCthulhuSheetManager.save(characterSheetUpdated);
+					localStorageCthulhuAttributesManager.save(attributesUpdated);
 
-				return {
-					...state,
-					characterSheet: {
-						...characterSheetUpdated
-					}
-				};
+					return { ...state, attributes: attributesUpdated };
+				} else {
+					const skillsUpdated = {...state.skills};
+					skillsUpdated[id] = skillLevel;
+
+					localStorageCthulhuSkillsManager.save(skillsUpdated);
+
+					return { ...state, skills: skillsUpdated };
+				}
 			}
 			break;
 		}
-		case CTHULHU_UPDATE_SHEET:
+		case CTHULHU_UPDATE_SKILLS:
 			// Update local storage
-			localStorageCthulhuSheetManager.save(action.payload);
+			localStorageCthulhuSkillsManager.save(action.payload);
 
 			return {
 				...state,
-				characterSheet: action.payload,
-				showCthulhuSheetModal: false
+				skills: action.payload
+			};
+		case CTHULHU_UPDATE_ATTRIBUTES:
+			// Update local storage
+			localStorageCthulhuAttributesManager.save(action.payload);
+
+			return {
+				...state,
+				attributes: action.payload
 			};
 		case CTHULHU_DICE_ROLLED:
 			return {

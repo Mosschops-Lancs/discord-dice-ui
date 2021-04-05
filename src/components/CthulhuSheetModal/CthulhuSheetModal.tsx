@@ -3,11 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import classNames from 'classnames';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import styles from "./CthulhuSheetModal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileInvoice } from '@fortawesome/free-solid-svg-icons';
-import { closeCthulhuSheetModal, cthulhuSheetUpdateRequested, requestCthulhuRoll } from "../../actions/cthulhu.actions";
-import cthulhuSkillsList, { SkillType } from './cthulhuSkillsList';
+import {
+	closeCthulhuSheetModal,
+	cthulhuSkillsUpdateRequested,
+	cthulhuAttributesUpdateRequested,
+	requestCthulhuRoll
+} from "../../actions/cthulhu.actions";
+import styles from "./CthulhuSheetModal.module.css";
+import cthulhuSkillsList, { SkillType } from './utils/cthulhuSkillsList';
+import cthulhuAttributesList, { AttributeType } from './utils/cthulhuAttributesList';
 import CthulhuSkill from "./CthulhuSkill";
 
 function Checkbox({ name, label, onChange, isDisabled }: any) {
@@ -37,40 +43,56 @@ function Checkbox({ name, label, onChange, isDisabled }: any) {
 
 function CthulhuSheetModal() {
 	const dispatch = useDispatch();
-	const [sheetState, setSheetState] = useState({});
+	const [skillsState, setSkillsState] = useState<{[key: string] : number}>({});
+	const [attributesState, setAttributesState] = useState<{[key: string] : number}>({});
 	const [bonusState, setBonusState] = useState('');
 
 	const hideModal = () => dispatch(closeCthulhuSheetModal());
-	const updateSheet = (st : any) => dispatch(cthulhuSheetUpdateRequested(st));
+	const updateSkills = (st : any) => dispatch(cthulhuSkillsUpdateRequested(st));
+	const updateAttributes = (st : any) => dispatch(cthulhuAttributesUpdateRequested(st));
 	const cthulhuState = useSelector(({ cthulhuState }: any) => cthulhuState);
 
-	const { showCthulhuSheetModal, characterSheet } = cthulhuState;
+	const { showCthulhuSheetModal, skills, attributes } = cthulhuState;
 
 	const CTHULHU_BONUS = 'CTHULHU_BONUS';
 	const CTHULHU_TWO_BONUS = 'CTHULHU_TWO_BONUS';
 	const CTHULHU_PENALTY = 'CTHULHU_PENALTY';
 	const CTHULHU_TWO_PENALTY = 'CTHULHU_TWO_PENALTY';
 
+	const SKILL = 'SKILL';
+	const ATTR = 'ATTR';
+
 	useEffect(() => {
-		setSheetState(characterSheet);
+		setSkillsState(skills);
+		setAttributesState(attributes);
 		setBonusState('');
-	}, [characterSheet, showCthulhuSheetModal]);
+	}, [attributes, skills, showCthulhuSheetModal]);
 
-	// @ts-ignore
-	const getValueById = (id: string) => sheetState[id] || 0;
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
 		const value = Number(event.target.value);
 
 		if (!isNaN(value)) {
-			setSheetState({
-				...sheetState,
-				[event.target.name]: value
-			});
+			if (type === SKILL) {
+				setSkillsState({
+					...skillsState,
+					[event.target.name]: value
+				});
+			}
+			if (type === ATTR) {
+				setAttributesState({
+					...attributesState,
+					[event.target.name]: value
+				});
+			}
 		}
 	};
 
-	const saveChanges = () => updateSheet(sheetState);
+	const saveChanges = () => {
+		updateSkills(skillsState);
+		updateAttributes(attributesState);
+
+		hideModal();
+	};
 
 	const submitRoll = (value: number, skillId: string) => {
 		if (value) {
@@ -136,12 +158,26 @@ function CthulhuSheetModal() {
 					</div>
 				</div>
 				<div className={styles.list}> {
-					cthulhuSkillsList.map((skill: SkillType) => (
+					cthulhuAttributesList.map(({ id, name }: AttributeType) => (
 						<CthulhuSkill
-							key={skill.id}
-							name={skill.name}
-							skillId={skill.id}
-							value={getValueById(skill.id)}
+							key={id}
+							type={ATTR}
+							name={name}
+							skillId={id}
+							value={attributesState[id] || 0}
+							onChange={handleChange}
+							submitRoll={submitRoll}
+						/>
+					))
+				} </div>
+				<div className={styles.list}> {
+					cthulhuSkillsList.map(({ id, name }: SkillType) => (
+						<CthulhuSkill
+							key={id}
+							type={SKILL}
+							name={name}
+							skillId={id}
+							value={skillsState[id] || 0}
 							onChange={handleChange}
 							submitRoll={submitRoll}
 						/>

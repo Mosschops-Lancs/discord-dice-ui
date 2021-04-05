@@ -9,7 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPercent, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './CthulhuModalForm.css';
 import InputRange from "../InputRange/InputRange";
-import cthulhuSkillsList, { getSkillById, SkillType } from "../CthulhuSheetModal/cthulhuSkillsList";
+import cthulhuSkillsList, { getSkillById, SkillType } from "../CthulhuSheetModal/utils/cthulhuSkillsList";
+import cthulhuAttributesList, {
+	AttributeType,
+	getAttributeById
+} from "../CthulhuSheetModal/utils/cthulhuAttributesList";
+import styles from "../CthulhuSheetModal/CthulhuSheetModal.module.css";
+import Modal from "react-bootstrap/Modal";
 
 const PercentIcon = () => (
 	<span className="percent-icon"><FontAwesomeIcon icon={faPercent} /></span>
@@ -91,7 +97,7 @@ function CthulhuModalForm({
 		}
 	};
 
-	const handleSkillChange = (event: any, id: string) => {
+	const handleDropdownChange = (event: any, id: string) => {
 		event.preventDefault();
 		change('skillId', id)
 	};
@@ -101,7 +107,7 @@ function CthulhuModalForm({
 		change('skillId', '')
 	};
 
-	const selectedSkill = getSkillById(skillId);
+	const selectedSkill = getSkillById(skillId) || getAttributeById(skillId) || null;
 
 	return (
 		<Form
@@ -163,17 +169,31 @@ function CthulhuModalForm({
 					>
 						<span>{selectedSkill?.name || "Save a Skill to the Character Sheet"}</span>
 					</Dropdown.Toggle>
-					<Dropdown.Menu className="cthulhu-select-to-sheet__menu"> {
-						cthulhuSkillsList.map(({ id, name }: SkillType) => (
-							<Dropdown.Item
-								key={id}
-								href="#"
-								className={classNames({
-									'cthulhu-select-to-sheet__menu--selected': skillId && skillId === id
-								})}
-								onClick={(e) => handleSkillChange(e, id)}>{name}</Dropdown.Item>
-						))
-					} </Dropdown.Menu>
+					<Dropdown.Menu>
+						<div className="cthulhu-select-to-sheet__list"> {
+							cthulhuAttributesList.map(({ id, name }: AttributeType) => (
+								<Dropdown.Item
+									key={id}
+									href="#"
+									className={classNames({
+										'cthulhu-select-to-sheet__item--selected': skillId && skillId === id
+									})}
+									onClick={(e) => handleDropdownChange(e, id)}>{name}</Dropdown.Item>
+							))
+						} </div>
+						<div className="cthulhu-select-to-sheet__list-separator" />
+						<div className="cthulhu-select-to-sheet__list"> {
+							cthulhuSkillsList.map(({ id, name }: SkillType) => (
+								<Dropdown.Item
+									key={id}
+									href="#"
+									className={classNames({
+										'cthulhu-select-to-sheet__item--selected': skillId && skillId === id
+									})}
+									onClick={(e) => handleDropdownChange(e, id)}>{name}</Dropdown.Item>
+							))
+						} </div>
+					</Dropdown.Menu>
 				</Dropdown>
 				<TimesIcon onClick={clearSkill}/>
 			</section>

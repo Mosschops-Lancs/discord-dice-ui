@@ -5,13 +5,21 @@ import dieImg from  "../../img/d10.png";
 
 interface SkillProps {
 	name: string;
+	type: string;
 	skillId: string;
 	value: number;
-	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>, type: string) => void;
 	submitRoll: (value: number, skillId: string) => void;
 }
 
-function CthulhuSkill({ name, skillId, value, onChange, submitRoll } : SkillProps) {
+function CthulhuSkill({
+	name,
+	skillId,
+	type,
+	value,
+	onChange,
+	submitRoll
+} : SkillProps) {
 	const halfValue = Math.floor(value / 2);
 	const oneFifthValue = Math.floor(value / 5);
 
@@ -36,7 +44,7 @@ function CthulhuSkill({ name, skillId, value, onChange, submitRoll } : SkillProp
 					name={skillId}
 					value={value || ''}
 					className={classNames([styles.input, styles.inputMain])}
-					onChange={e => onChange(e)}
+					onChange={e => onChange(e, type)}
 					autoComplete="off"
 				/>
 			</div>

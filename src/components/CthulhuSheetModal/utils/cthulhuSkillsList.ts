@@ -67,7 +67,7 @@ export interface SkillType {
 }
 
 export function getSkillById(id: string) {
-	return cthulhuSkillsList.find((item) => item.id === id);
+	return cthulhuSkillsList.find((item) => item.id === id) || null;
 }
 
 export default cthulhuSkillsList;
