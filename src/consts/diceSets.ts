@@ -30,7 +30,8 @@ import {
 	INFINITY_TOKENS,
 	NARRATIVE_TOKENS,
 	WARHAMMER_MONEY,
-	CTHULHU_SHEET_MODAL
+	CTHULHU_SHEET_MODAL,
+	COMBAT_TRACKER
 } from './diceConstants';
 
 import { FATE_DIE } from './fateConsts';
@@ -72,6 +73,11 @@ export const classicSet = [{
 }, {
 	diceType: POOL,
 	label: 'Pool Builder',
+	noDropdown: true
+}, {
+	diceType: COMBAT_TRACKER,
+	label: 'Combat Tracker',
+	diceImg: 'combat-tracker.png',
 	noDropdown: true
 }];
 
