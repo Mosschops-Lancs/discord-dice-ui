@@ -1,8 +1,10 @@
 import React from "react";
+import classNames from "classnames";
 import styles from './Zone.module.css';
 import AddCombatant from "./AddCombatant";
-import useCombatTrackerStore, { Combatant } from "./store";
-
+import useCombatTrackerStore, { CombatantTypes } from "./store";
+import Combatant from "./Combatant";
+import combatantStyles from './Combatant.module.css';
 
 interface ZoneProps {
 	name: string;
@@ -10,7 +12,9 @@ interface ZoneProps {
 }
 
 export default function Zone({ name, index }: ZoneProps) {
-	const combatants = useCombatTrackerStore(({ combatants }) => combatants);
+	const combatants = useCombatTrackerStore(
+		({ combatants }) => combatants.filter(c => c.zoneIndex === index)
+	);
 
 	console.log('combatants', combatants);
 
@@ -19,14 +23,23 @@ export default function Zone({ name, index }: ZoneProps) {
 			<div className={styles.name}>
 				{name}
 			</div>
+			<div className={classNames([combatantStyles.table, styles.legend])}>
+				<div className={combatantStyles.cell} />
+				<div className={combatantStyles.cell}>name</div>
+				<div className={combatantStyles.cell}>hp</div>
+				<div className={combatantStyles.cell}>initiative</div>
+				<div className={combatantStyles.cell}>wounds</div>
+				<div className={combatantStyles.cell}>conditions</div>
+				<div className={combatantStyles.cell} />
+				<div className={combatantStyles.cell} />
+
+			</div>
 			<div>
 				{
-					combatants.map((combatant: Combatant) => ( <span>{combatant.combatantName}</span>))
+					combatants.map((combatant: CombatantTypes) => <Combatant {...combatant} /> )
 				}
 			</div>
-			<div className={styles.body}>
 				<AddCombatant zoneIndex={index} />
-			</div>
 		</div>
 	);
 }

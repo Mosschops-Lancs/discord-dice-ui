@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import useCombatTrackerStore from "./store";
+import styles from './AddCombatant.module.css';
 
 interface AddCombatantProps {
 	zoneIndex: number;
 }
 
 export default function AddCombatant({ zoneIndex }: AddCombatantProps) {
-	const [combatantName, setCombatantName] = useState('');
+	const [name, setName] = useState('');
 	const [hp, setHp] = useState('');
 	const [initiative, setInitiative] = useState('');
 
@@ -19,27 +20,27 @@ export default function AddCombatant({ zoneIndex }: AddCombatantProps) {
 		const hpNum = parseInt(hp, 10);
 		const initiativeNum = parseInt(initiative, 10);
 
-		if (combatantName && hpNum && initiativeNum) {
+		if (name && hpNum && initiativeNum) {
 			addCombatant({
-				combatantName,
+				name,
 				hp: hpNum,
 				initiative: initiativeNum,
 				zoneIndex
 			});
 
-			setCombatantName('');
+			setName('');
 			setHp('');
 			setInitiative('');
 		}
 	};
 
 	return (
-		<form onSubmit={handleAddCombatant}>
+		<form onSubmit={handleAddCombatant} className={styles.container}>
 			<input
-				name="combatantName"
+				name="name"
 				type="text"
-				value={combatantName}
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCombatantName(e.target.value)}
+				value={name}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
 			/>
 			<input
 				name="hp"

@@ -3,16 +3,18 @@
     background: #eee;
     border-radius: 12px;
     border: 1px solid darkgrey;
-    min-height: 45px;
+    min-height: 85px;
     overflow: hidden;
 }
 
 .name {
-    background: #c9c9c9;
+    background: #e5e5e5;
     text-align: center;
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
 }
 
-.body {
-    padding: 10px;
+.legend {
+    font-size: 13px;
+    background: #bbbbbb;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
 }

@@ -1,20 +1,27 @@
 import create from 'zustand';
+import { createCombatant } from "./utils/utils";
 
-export interface Combatant {
-    combatantName: string;
-    zoneIndex: number;
+export interface CreateCombatant {
+    name: string;
+    hp: number;
     initiative: number;
-    hp: number
+    zoneIndex: number;
+}
+
+export interface CombatantTypes extends CreateCombatant {
+    wounds: string;
+    conditions: string;
+    id: number;
 }
 
 type State = {
     isModalOpen: boolean
     zones: string[]
-    combatants: Combatant[]
+    combatants: CombatantTypes[]
     openModal: () => void
     closeModal: () => void
     addZone: (name: string) => void
-    addCombatant: (data: Combatant) => void
+    addCombatant: (data: CreateCombatant) => void
 }
 
 const useStore = create<State>(set => ({
@@ -26,8 +33,8 @@ const useStore = create<State>(set => ({
     addZone: (zoneName) => {
         set((state) => set({ zones: [...state.zones, zoneName] }))
     },
-    addCombatant: (combatant) => {
-        set((state) => set({ combatants: [...state.combatants, combatant] }))
+    addCombatant: (data) => {
+        set((state) => set({ combatants: [...state.combatants, createCombatant(data)] }))
     }
 }));
 
