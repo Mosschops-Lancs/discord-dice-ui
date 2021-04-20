@@ -14,10 +14,13 @@ export default function Combatant({
 	initiative,
 	wounds,
 	conditions,
-	id
+	id,
+	zoneIndex
 }: CombatantTypes) {
 	const setIsDragging = useCombatTrackerStore(({ setIsDragging }) => setIsDragging);
 	const setCombatantZone = useCombatTrackerStore(({ setCombatantZone }) => setCombatantZone);
+	const forceUpdateCombatants = useCombatTrackerStore(({ forceUpdateCombatants }) => forceUpdateCombatants);
+	const deleteCombatant = useCombatTrackerStore(({ deleteCombatant }) => deleteCombatant);
 	const hoverZone = useCombatTrackerStore(({ hoverZone }) => hoverZone);
 
 	const handleStart = () => {
@@ -26,11 +29,15 @@ export default function Combatant({
 	const handleStop = () => {
 		setIsDragging(false);
 
-		if (hoverZone !== null) {
+		if (hoverZone === null || zoneIndex === hoverZone) {
+			forceUpdateCombatants()
+		} else {
 			setCombatantZone(id, hoverZone);
 		}
+	};
 
-		console.log('on stop hoverZone', hoverZone)
+	const handleDelete = () => {
+		deleteCombatant(id);
 	};
 
 	return (
@@ -90,6 +97,7 @@ export default function Combatant({
 						<Button
 							variant="outline-danger"
 							className={styles.button}
+							onClick={handleDelete}
 						>
 							<FontAwesomeIcon
 								icon={faTrashAlt}

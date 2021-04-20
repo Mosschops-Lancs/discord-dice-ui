@@ -17,6 +17,7 @@ export interface CombatantTypes extends CreateCombatant {
 type ZoneIndex = number | null;
 
 type State = {
+    renders: number;
     isModalOpen: boolean;
     isDragging: boolean
     zones: string[]
@@ -26,12 +27,15 @@ type State = {
     closeModal: () => void
     addZone: (name: string) => void
     addCombatant: (data: CreateCombatant) => void
+    deleteCombatant: (id: number) => void
     setCombatantZone: (combatantId: number, zoneIndex: number) => void
     setIsDragging: (dragState: boolean) => void
     setHoverZone: (zoneIndex: ZoneIndex) => void
+    forceUpdateCombatants: () => void
 }
 
 const useStore = create<State>(set => ({
+    renders: 0,
     isModalOpen: false,
     isDragging: false,
     zones: [],
@@ -45,6 +49,9 @@ const useStore = create<State>(set => ({
     addCombatant: (data) => {
         set((state) => set({ combatants: [...state.combatants, createCombatant(data)] }));
     },
+    deleteCombatant: (combatantId) => {
+        set((state) => set({ combatants: state.combatants.filter(({ id }) => id !== combatantId) }));
+    },
     setCombatantZone: (combatantId, zoneIndex) => {
         set((state) => {
             const combatants = [...state.combatants].map(combatant => {
@@ -53,11 +60,13 @@ const useStore = create<State>(set => ({
                 }
                 return combatant;
             });
-            set({ combatants })
+            set({ combatants, renders: state.renders + 1 })
         });
     },
     setIsDragging: (dragState) => set({ isDragging: dragState }),
-    setHoverZone: (zoneIndex) => set({ hoverZone: zoneIndex })
+    setHoverZone: (zoneIndex) => set({ hoverZone: zoneIndex }),
+    forceUpdateCombatants: () => set((state) => set({ renders: state.renders + 1 }))
+
 }));
 
 export default useStore;

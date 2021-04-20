@@ -13,10 +13,14 @@ interface ZoneProps {
 
 export default function Zone({ name, index }: ZoneProps) {
 	const combatants = useCombatTrackerStore(
-		({ combatants }) => combatants.filter(c => c.zoneIndex === index)
+		({ combatants }) => combatants
+			.filter(cb => cb.zoneIndex === index)
+			.sort((cbA, cbB) => cbA.initiative - cbB.initiative)
 	);
+
 	const isDragging = useCombatTrackerStore(({ isDragging }) => isDragging);
 	const setHoverZone = useCombatTrackerStore(({ setHoverZone }) => setHoverZone);
+	const hoverZone = useCombatTrackerStore(({ hoverZone }) => hoverZone);
 
 	const onMouseEnter = () => setHoverZone(index);
 
@@ -28,7 +32,13 @@ export default function Zone({ name, index }: ZoneProps) {
 			onMouseEnter={onMouseEnter}
 			onMouseLeave={onMouseLeave}
 		>
-			{ isDragging && <div className={styles.draggingOverlay} /> }
+			{ isDragging && <div
+				className={classNames({
+						[styles.draggingOverlay]: true,
+						[styles.draggingOverlayHovered]: hoverZone === index
+				})}
+			/>
+			}
 			<div className={styles.name}>
 				{name}
 			</div>

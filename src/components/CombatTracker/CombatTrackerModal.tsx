@@ -10,6 +10,7 @@ function CombatTrackerModal({}: any) {
 	const showModal = useCombatTrackerStore(({ isModalOpen }) => isModalOpen);
 	const zones: Array<string> = useCombatTrackerStore(({ zones }) => zones);
 	const closeModal: () => void = useCombatTrackerStore(({ closeModal }) => closeModal);
+	const renders: () => void = useCombatTrackerStore(({ renders }) => renders);
 
 	return (
 		<Modal show={showModal} onHide={closeModal} size="lg">
@@ -18,7 +19,16 @@ function CombatTrackerModal({}: any) {
 			</Modal.Header>
 			<Modal.Body>
 				<AddZone />
-				<section> { zones.map((zone: string, i: number) => <Zone name={zone} index={i} key={i} />) } </section>
+				<section>
+					{
+						zones.map((zone: string, i: number) => (
+							<Zone
+								name={zone}
+								index={i}
+								key={`${i}:${renders}`}
+							/>))
+					}
+				</section>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button variant="outline-secondary" onClick={closeModal}>

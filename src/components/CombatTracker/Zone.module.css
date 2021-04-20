@@ -19,6 +19,11 @@
     background: #007bff;
 }
 
+.draggingOverlayHovered {
+    background: #d4e4ff;
+    opacity: .8;
+}
+
 .name {
     border-top-right-radius: 12px;
     border-top-left-radius: 12px;
