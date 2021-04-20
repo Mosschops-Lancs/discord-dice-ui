@@ -11,6 +11,11 @@
     cursor: grab;
 }
 
+.dragHandle.dragHandleDisabled {
+    cursor: default;
+    opacity: .5;
+}
+
 .cell {
     display: flex;
     justify-content: center;

@@ -22,6 +22,7 @@ export default function Combatant({
 	const forceUpdateCombatants = useCombatTrackerStore(({ forceUpdateCombatants }) => forceUpdateCombatants);
 	const deleteCombatant = useCombatTrackerStore(({ deleteCombatant }) => deleteCombatant);
 	const hoverZone = useCombatTrackerStore(({ hoverZone }) => hoverZone);
+	const zones = useCombatTrackerStore(({ zones }) => zones);
 
 	const handleStart = () => {
 		setIsDragging(true);
@@ -45,10 +46,16 @@ export default function Combatant({
 			handle=".handle"
 			onStart={handleStart}
 			onStop={handleStop}
+			disabled={zones.length === 1}
 		>
 			<div className={styles.container}>
 				<div className={styles.table}>
-					<div className={classNames([styles.cell, styles.dragHandle, "handle"])}>
+					<div className={classNames({
+						[styles.cell]: true,
+						[styles.dragHandle]: true,
+						[styles.dragHandleDisabled]: zones.length === 1,
+						"handle": true
+					})}>
 						<FontAwesomeIcon
 							icon={faGripHorizontal}
 						/>
