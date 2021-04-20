@@ -4,10 +4,24 @@
     border-radius: 12px;
     border: 1px solid darkgrey;
     min-height: 85px;
-    overflow: hidden;
+    position: relative;
+}
+
+.isDragging {
+    background: #007bff;
+}
+
+.draggingOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .3;
+    background: #007bff;
 }
 
 .name {
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
     background: #e5e5e5;
     text-align: center;
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;

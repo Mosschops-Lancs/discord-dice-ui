@@ -15,11 +15,11 @@ export default function Zone({ name, index }: ZoneProps) {
 	const combatants = useCombatTrackerStore(
 		({ combatants }) => combatants.filter(c => c.zoneIndex === index)
 	);
-
-	console.log('combatants', combatants);
+	const isDragging = useCombatTrackerStore(({ isDragging }) => isDragging);
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} id={`${index}`}>
+			{ isDragging && <div className={styles.draggingOverlay} /> }
 			<div className={styles.name}>
 				{name}
 			</div>

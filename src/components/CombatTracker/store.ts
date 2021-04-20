@@ -15,17 +15,20 @@ export interface CombatantTypes extends CreateCombatant {
 }
 
 type State = {
-    isModalOpen: boolean
+    isModalOpen: boolean;
+    isDragging: boolean
     zones: string[]
     combatants: CombatantTypes[]
     openModal: () => void
     closeModal: () => void
     addZone: (name: string) => void
     addCombatant: (data: CreateCombatant) => void
+    setIsDragging: (dragState: boolean) => void
 }
 
 const useStore = create<State>(set => ({
     isModalOpen: false,
+    isDragging: false,
     zones: [],
     combatants: [],
     openModal: () => set({ isModalOpen: false}),
@@ -35,7 +38,8 @@ const useStore = create<State>(set => ({
     },
     addCombatant: (data) => {
         set((state) => set({ combatants: [...state.combatants, createCombatant(data)] }))
-    }
+    },
+    setIsDragging: (dragState) => set({ isDragging: dragState })
 }));
 
 export default useStore;

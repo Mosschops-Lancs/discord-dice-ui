@@ -2,7 +2,7 @@ import React from "react";
 import Draggable from 'react-draggable';
 import classNames from "classnames";
 import styles from './Combatant.module.css';
-import { CombatantTypes } from "./store";
+import useCombatTrackerStore, { CombatantTypes } from "./store";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faCopy,  } from "@fortawesome/free-regular-svg-icons";
@@ -15,9 +15,25 @@ export default function Combatant({
 	wounds,
 	conditions
 }: CombatantTypes) {
+	const setIsDragging = useCombatTrackerStore(({ setIsDragging }) => setIsDragging);
+
+	const handleStart = () => {
+		setIsDragging(true);
+	};
+	const handleStop = () => {
+		setIsDragging(false);
+	};
+	const handleDrag = (e: any, x: any) => {
+		console.log('e.target', e.target);
+	};
+
 	return (
 		<Draggable
-			handle=".handle">
+			handle=".handle"
+			onStart={handleStart}
+			onDrag={handleDrag}
+			onStop={handleStop}
+		>
 			<div className={styles.container}>
 				<div className={styles.table}>
 					<div className={classNames([styles.cell, styles.dragHandle, "handle"])}>

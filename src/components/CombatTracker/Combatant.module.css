@@ -24,6 +24,7 @@
     border: 0;
     font-size: 14px;
     padding: 0 4px;
+    background: transparent;
 }
 
 .initiativeInput,
