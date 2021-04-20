@@ -1,5 +1,5 @@
 .container {
-    z-index: 99999;
+    position: relative;
 }
 
 .table {
@@ -45,6 +45,7 @@
 
 :global(.react-draggable-dragging) {
     background: #eeeeee;
+    z-index: 99999;
 }
 
 :global(.react-draggable-dragging) .input{
