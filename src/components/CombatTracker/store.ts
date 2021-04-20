@@ -14,16 +14,21 @@ export interface CombatantTypes extends CreateCombatant {
     id: number;
 }
 
+type ZoneIndex = number | null;
+
 type State = {
     isModalOpen: boolean;
     isDragging: boolean
     zones: string[]
+    hoverZone: ZoneIndex
     combatants: CombatantTypes[]
     openModal: () => void
     closeModal: () => void
     addZone: (name: string) => void
     addCombatant: (data: CreateCombatant) => void
+    setCombatantZone: (combatantId: number, zoneIndex: number) => void
     setIsDragging: (dragState: boolean) => void
+    setHoverZone: (zoneIndex: ZoneIndex) => void
 }
 
 const useStore = create<State>(set => ({
@@ -31,15 +36,28 @@ const useStore = create<State>(set => ({
     isDragging: false,
     zones: [],
     combatants: [],
+    hoverZone: null,
     openModal: () => set({ isModalOpen: false}),
     closeModal: () => set({ isModalOpen: false }),
     addZone: (zoneName) => {
         set((state) => set({ zones: [...state.zones, zoneName] }))
     },
     addCombatant: (data) => {
-        set((state) => set({ combatants: [...state.combatants, createCombatant(data)] }))
+        set((state) => set({ combatants: [...state.combatants, createCombatant(data)] }));
     },
-    setIsDragging: (dragState) => set({ isDragging: dragState })
+    setCombatantZone: (combatantId, zoneIndex) => {
+        set((state) => {
+            const combatants = [...state.combatants].map(combatant => {
+                if (combatant.id === combatantId) {
+                    combatant.zoneIndex = zoneIndex;
+                }
+                return combatant;
+            });
+            set({ combatants })
+        });
+    },
+    setIsDragging: (dragState) => set({ isDragging: dragState }),
+    setHoverZone: (zoneIndex) => set({ hoverZone: zoneIndex })
 }));
 
 export default useStore;

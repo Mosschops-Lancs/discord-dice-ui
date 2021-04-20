@@ -13,25 +13,30 @@ export default function Combatant({
 	hp,
 	initiative,
 	wounds,
-	conditions
+	conditions,
+	id
 }: CombatantTypes) {
 	const setIsDragging = useCombatTrackerStore(({ setIsDragging }) => setIsDragging);
+	const setCombatantZone = useCombatTrackerStore(({ setCombatantZone }) => setCombatantZone);
+	const hoverZone = useCombatTrackerStore(({ hoverZone }) => hoverZone);
 
 	const handleStart = () => {
 		setIsDragging(true);
 	};
 	const handleStop = () => {
 		setIsDragging(false);
-	};
-	const handleDrag = (e: any, x: any) => {
-		// console.log('e.target', e.target);
+
+		if (hoverZone !== null) {
+			setCombatantZone(id, hoverZone);
+		}
+
+		console.log('on stop hoverZone', hoverZone)
 	};
 
 	return (
 		<Draggable
 			handle=".handle"
 			onStart={handleStart}
-			onDrag={handleDrag}
 			onStop={handleStop}
 		>
 			<div className={styles.container}>

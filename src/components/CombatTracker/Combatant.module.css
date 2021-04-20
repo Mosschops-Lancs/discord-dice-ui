@@ -46,6 +46,7 @@
 :global(.react-draggable-dragging) {
     background: #eeeeee;
     z-index: 99999;
+    pointer-events: none;
 }
 
 :global(.react-draggable-dragging) .input{

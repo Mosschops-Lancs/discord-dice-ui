@@ -16,9 +16,18 @@ export default function Zone({ name, index }: ZoneProps) {
 		({ combatants }) => combatants.filter(c => c.zoneIndex === index)
 	);
 	const isDragging = useCombatTrackerStore(({ isDragging }) => isDragging);
+	const setHoverZone = useCombatTrackerStore(({ setHoverZone }) => setHoverZone);
+
+	const onMouseEnter = () => setHoverZone(index);
+
+	const onMouseLeave = () => setHoverZone(null);
 
 	return (
-		<div className={styles.container} id={`${index}`}>
+		<div
+			className={styles.container}
+			onMouseEnter={onMouseEnter}
+			onMouseLeave={onMouseLeave}
+		>
 			{ isDragging && <div className={styles.draggingOverlay} /> }
 			<div className={styles.name}>
 				{name}
