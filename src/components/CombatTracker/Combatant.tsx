@@ -24,7 +24,7 @@ export default function Combatant({
 		setIsDragging(false);
 	};
 	const handleDrag = (e: any, x: any) => {
-		console.log('e.target', e.target);
+		// console.log('e.target', e.target);
 	};
 
 	return (
