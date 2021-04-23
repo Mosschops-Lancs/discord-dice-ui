@@ -5,8 +5,8 @@ import styles from './Combatant.module.css';
 import useCombatTrackerStore, { CombatantTypes } from "./store";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt, faCopy,  } from "@fortawesome/free-regular-svg-icons";
-import { faGripHorizontal } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faCopy } from "@fortawesome/free-regular-svg-icons";
+import { faGripHorizontal, faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 
 export default function Combatant({
 	name,
@@ -15,12 +15,14 @@ export default function Combatant({
 	wounds,
 	conditions,
 	id,
-	zoneIndex
+	zoneIndex,
+	isLocked
 }: CombatantTypes) {
 	const setIsDragging = useCombatTrackerStore(({ setIsDragging }) => setIsDragging);
 	const setCombatantZone = useCombatTrackerStore(({ setCombatantZone }) => setCombatantZone);
 	const forceUpdateCombatants = useCombatTrackerStore(({ forceUpdateCombatants }) => forceUpdateCombatants);
 	const deleteCombatant = useCombatTrackerStore(({ deleteCombatant }) => deleteCombatant);
+	const lockCombatant = useCombatTrackerStore(({ lockCombatant }) => lockCombatant);
 	const hoverZone = useCombatTrackerStore(({ hoverZone }) => hoverZone);
 	const zones = useCombatTrackerStore(({ zones }) => zones);
 
@@ -41,19 +43,21 @@ export default function Combatant({
 		deleteCombatant(id);
 	};
 
+	const handleLock = () => {
+		lockCombatant(id);
+	};
+
 	return (
 		<Draggable
 			handle=".handle"
 			onStart={handleStart}
 			onStop={handleStop}
-			disabled={zones.length === 1}
 		>
 			<div className={styles.container}>
 				<div className={styles.table}>
 					<div className={classNames({
 						[styles.cell]: true,
 						[styles.dragHandle]: true,
-						[styles.dragHandleDisabled]: zones.length === 1,
 						"handle": true
 					})}>
 						<FontAwesomeIcon
@@ -89,6 +93,17 @@ export default function Combatant({
 							className={styles.input}
 							value={wounds}
 						/>
+					</div>
+					<div className={styles.cell}>
+						<Button
+							variant="outline-secondary"
+							className={styles.button}
+							onClick={handleLock}
+						>
+							<FontAwesomeIcon
+								icon={isLocked ? faLock : faLockOpen}
+							/>
+						</Button>
 					</div>
 					<div className={styles.cell}>
 						<Button

@@ -10,6 +10,7 @@ function CombatTrackerModal({}: any) {
 	const showModal = useCombatTrackerStore(({ isModalOpen }) => isModalOpen);
 	const zones: Array<string> = useCombatTrackerStore(({ zones }) => zones);
 	const closeModal: () => void = useCombatTrackerStore(({ closeModal }) => closeModal);
+	const clearState: () => void = useCombatTrackerStore(({ clearState }) => clearState);
 	const renders: () => void = useCombatTrackerStore(({ renders }) => renders);
 
 	return (
@@ -18,6 +19,11 @@ function CombatTrackerModal({}: any) {
 				<Modal.Title>Combat Tracker</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
+				<Zone
+					name="Waiting Room"
+					index={-1}
+					key={`waitingRoom:${renders}`}
+				/>
 				<AddZone />
 				<section>
 					{
@@ -31,6 +37,9 @@ function CombatTrackerModal({}: any) {
 				</section>
 			</Modal.Body>
 			<Modal.Footer>
+				<Button variant="outline-danger" onClick={clearState}>
+					Clear
+				</Button>
 				<Button variant="outline-secondary" onClick={closeModal}>
 					Save and close
 				</Button>

@@ -54,7 +54,7 @@ export default function AddCombatant({ zoneIndex }: AddCombatantProps) {
 				value={initiative}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitiative(e.target.value)}
 			/>
-			<Button variant="primary" type="submit">
+			<Button variant="primary" size="sm" type="submit">
 				Add Combatant
 			</Button>
 		</form>

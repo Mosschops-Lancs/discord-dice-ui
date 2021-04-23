@@ -1,4 +1,5 @@
 import create from 'zustand';
+import { persist } from "zustand/middleware"
 import { createCombatant } from "./utils/utils";
 
 export interface CreateCombatant {
@@ -12,6 +13,7 @@ export interface CombatantTypes extends CreateCombatant {
     wounds: string;
     conditions: string;
     id: number;
+    isLocked: boolean;
 }
 
 type ZoneIndex = number | null;
@@ -28,13 +30,15 @@ type State = {
     addZone: (name: string) => void
     addCombatant: (data: CreateCombatant) => void
     deleteCombatant: (id: number) => void
+    lockCombatant: (id: number) => void
     setCombatantZone: (combatantId: number, zoneIndex: number) => void
     setIsDragging: (dragState: boolean) => void
     setHoverZone: (zoneIndex: ZoneIndex) => void
     forceUpdateCombatants: () => void
+    clearState: () => void
 }
 
-const useStore = create<State>(set => ({
+const useStore = create<State>((set => ({
     renders: 0,
     isModalOpen: false,
     isDragging: false,
@@ -52,6 +56,14 @@ const useStore = create<State>(set => ({
     deleteCombatant: (combatantId) => {
         set((state) => set({ combatants: state.combatants.filter(({ id }) => id !== combatantId) }));
     },
+    lockCombatant: (combatantId) => {
+        set((state) => set({ combatants: state.combatants.map((combatant) => {
+                if (combatantId === combatant.id) {
+                    combatant.isLocked = !combatant.isLocked
+                }
+                return combatant;
+            }) }));
+     },
     setCombatantZone: (combatantId, zoneIndex) => {
         set((state) => {
             const combatants = [...state.combatants].map(combatant => {
@@ -65,8 +77,15 @@ const useStore = create<State>(set => ({
     },
     setIsDragging: (dragState) => set({ isDragging: dragState }),
     setHoverZone: (zoneIndex) => set({ hoverZone: zoneIndex }),
-    forceUpdateCombatants: () => set((state) => set({ renders: state.renders + 1 }))
+    forceUpdateCombatants: () => set((state) => set({ renders: state.renders + 1 })),
+    clearState: () => set(({ combatants }) => set({
+        zones: [],
+        combatants: combatants.filter(c => c.isLocked).map(c => {
+            c.zoneIndex = -1;
+            return c;
+        })
+    })),
 
-}));
+})));
 
 export default useStore;

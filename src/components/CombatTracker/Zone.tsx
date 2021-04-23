@@ -12,10 +12,12 @@ interface ZoneProps {
 }
 
 export default function Zone({ name, index }: ZoneProps) {
+	const isWaitingRoom = index === -1;
+
 	const combatants = useCombatTrackerStore(
 		({ combatants }) => combatants
 			.filter(cb => cb.zoneIndex === index)
-			.sort((cbA, cbB) => cbA.initiative - cbB.initiative)
+			.sort((a, b) => b.initiative - a.initiative)
 	);
 
 	const isDragging = useCombatTrackerStore(({ isDragging }) => isDragging);
@@ -28,21 +30,31 @@ export default function Zone({ name, index }: ZoneProps) {
 
 	return (
 		<div
-			className={styles.container}
+			className={classNames({
+				[styles.container]: true,
+				[styles.containerWaitingRoom]: isWaitingRoom
+			})}
 			onMouseEnter={onMouseEnter}
 			onMouseLeave={onMouseLeave}
 		>
 			{ isDragging && <div
 				className={classNames({
-						[styles.draggingOverlay]: true,
-						[styles.draggingOverlayHovered]: hoverZone === index
+					[styles.draggingOverlay]: true,
+					[styles.draggingOverlayHovered]: hoverZone === index
 				})}
 			/>
 			}
-			<div className={styles.name}>
+			<div className={classNames({
+				[styles.name]: true,
+				[styles.nameWaitingRoom]: isWaitingRoom
+			})}>
 				{name}
 			</div>
-			<div className={classNames([combatantStyles.table, styles.legend])}>
+			<div className={classNames({
+				[combatantStyles.table]: true,
+				[styles.legend]: true,
+				[styles.legendWaitingRoom]: isWaitingRoom
+			})}>
 				<div className={combatantStyles.cell} />
 				<div className={combatantStyles.cell}>name</div>
 				<div className={combatantStyles.cell}>hp</div>
@@ -51,14 +63,14 @@ export default function Zone({ name, index }: ZoneProps) {
 				<div className={combatantStyles.cell}>conditions</div>
 				<div className={combatantStyles.cell} />
 				<div className={combatantStyles.cell} />
-
+				<div className={combatantStyles.cell} />
 			</div>
 			<div>
 				{
 					combatants.map((combatant: CombatantTypes) => <Combatant {...combatant} /> )
 				}
 			</div>
-				<AddCombatant zoneIndex={index} />
+			{ isWaitingRoom && <AddCombatant zoneIndex={index} /> }
 		</div>
 	);
 }

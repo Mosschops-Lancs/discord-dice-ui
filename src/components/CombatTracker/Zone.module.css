@@ -7,6 +7,11 @@
     position: relative;
 }
 
+.containerWaitingRoom {
+    background: #f6b17b;
+    border: 1px solid #f6b17b;
+}
+
 .isDragging {
     background: #007bff;
 }
@@ -27,13 +32,22 @@
 .name {
     border-top-right-radius: 12px;
     border-top-left-radius: 12px;
-    background: #e5e5e5;
+    background: #dbdada;
     text-align: center;
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+}
+
+.nameWaitingRoom {
+    background: #f1a05d;
 }
 
 .legend {
     font-size: 13px;
     background: #bbbbbb;
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+}
+
+.legendWaitingRoom {
+    background: saddlebrown;
+    color: #fff;
 }

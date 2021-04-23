@@ -23,7 +23,7 @@ export default function AddZone() {
 				value={zoneName}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setZoneName(e.target.value)}
 			/>
-			<Button variant="primary" type="submit">
+			<Button variant="primary" size="sm" type="submit">
 				Add Zone
 			</Button>
 		</form>
