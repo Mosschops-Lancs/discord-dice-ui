@@ -38,7 +38,7 @@ type State = {
     clearState: () => void
 }
 
-const useStore = create<State>((set => ({
+const useStore = create<State>(persist((set => ({
     renders: 0,
     isModalOpen: false,
     isDragging: false,
@@ -86,6 +86,8 @@ const useStore = create<State>((set => ({
         })
     })),
 
-})));
+})), {
+    name: 'combat-tracker'
+}));
 
 export default useStore;
