@@ -14,9 +14,12 @@ export interface CombatantTypes extends CreateCombatant {
     conditions: string;
     id: number;
     isLocked: boolean;
+    hpMax: number;
 }
 
 type ZoneIndex = number | null;
+
+export type CombatantTypesEditableFields = Exclude<keyof CombatantTypes, 'zoneIndex' | 'id' | 'isLocked' | 'hpMax'>
 
 type State = {
     renders: number;
@@ -30,6 +33,11 @@ type State = {
     addZone: (name: string) => void
     addCombatant: (data: CreateCombatant) => void
     deleteCombatant: (id: number) => void
+    updateCombatant: (
+        id: number,
+        field: CombatantTypesEditableFields,
+        value: string
+    ) => void
     lockCombatant: (id: number) => void
     setCombatantZone: (combatantId: number, zoneIndex: number) => void
     setIsDragging: (dragState: boolean) => void
@@ -55,6 +63,38 @@ const useStore = create<State>(persist((set => ({
     },
     deleteCombatant: (combatantId) => {
         set((state) => set({ combatants: state.combatants.filter(({ id }) => id !== combatantId) }));
+    },
+    updateCombatant: (combatantId, field, value) => {
+        set((state) => {
+            const combatant = state.combatants.find(c => c.id) as CombatantTypes;
+            const combatantIndex = state.combatants.findIndex(c => c.id);
+            let newValue;
+
+            if (field === 'hp' || field ===  'initiative') {
+                newValue = Number(value);
+            } else {
+                newValue = value;
+            }
+
+            // @ts-ignore
+            combatant[field] = newValue;
+
+            const newCombatants = [...state.combatants];
+            newCombatants[combatantIndex] = combatant;
+
+            set({
+                combatants: newCombatants
+            });
+
+            // set({
+            //     combatants: state.combatants.map(c => {
+            //         if (c.id === combatantId) {
+            //             return combatant;
+            //         }
+            //         return c;
+            //     })
+            // })
+        });
     },
     lockCombatant: (combatantId) => {
         set((state) => set({ combatants: state.combatants.map((combatant) => {

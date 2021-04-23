@@ -67,7 +67,7 @@ export default function Zone({ name, index }: ZoneProps) {
 			</div>
 			<div>
 				{
-					combatants.map((combatant: CombatantTypes) => <Combatant {...combatant} /> )
+					combatants.map((combatant: CombatantTypes) => <Combatant key={combatant.id} {...combatant} /> )
 				}
 			</div>
 			{ isWaitingRoom && <AddCombatant zoneIndex={index} /> }

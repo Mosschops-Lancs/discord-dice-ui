@@ -6,6 +6,7 @@ export function createCombatant( combatantData: CreateCombatant): CombatantTypes
 		wounds: '',
 		conditions: '',
 		id: Date.now(),
-		isLocked: false
+		isLocked: false,
+		hpMax: combatantData.hp
 	};
 }

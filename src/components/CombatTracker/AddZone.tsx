@@ -16,7 +16,6 @@ export default function AddZone() {
 	};
 	return (
 		<form onSubmit={handleAddZone}>
-			<div><label htmlFor="addZone">Zone name:</label></div>
 			<input
 				name="addZone"
 				type="text"
