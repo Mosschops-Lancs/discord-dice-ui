@@ -12,16 +12,48 @@ interface InputProps {
 	value: string | number;
 	classname?: string;
 	name: string;
-	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	// onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+	onChange?: (event: any) => void;
+	placeholder?: string;
+	disabled?: boolean;
 }
 
-function Input ({ value, classname, name, onChange }: InputProps) {
+function Input ({
+	value,
+	classname,
+	name,
+	onChange,
+	placeholder = '',
+	disabled = false
+}: InputProps) {
 	return (
 		<input
 			className={classNames([styles.input, classname])}
 			name={name}
 			value={value}
 			onChange={onChange}
+			placeholder={placeholder}
+			disabled={disabled}
+		/>
+	);
+}
+
+function TextArea ({
+	value,
+	classname,
+	name,
+	onChange,
+	placeholder = '',
+	disabled = false
+}: InputProps) {
+	return (
+		<textarea
+			className={classNames([styles.input, classname])}
+			name={name}
+			value={value}
+			onChange={onChange}
+			placeholder={placeholder}
+			disabled={disabled}
 		/>
 	);
 }
@@ -34,7 +66,8 @@ export default function Combatant({
 	conditions,
 	id,
 	zoneIndex,
-	isLocked
+	isLocked,
+	hpMax
 }: CombatantTypes) {
 	const setIsDragging = useCombatTrackerStore(({ setIsDragging }) => setIsDragging);
 	const setCombatantZone = useCombatTrackerStore(({ setCombatantZone }) => setCombatantZone);
@@ -97,21 +130,6 @@ export default function Combatant({
 					</div>
 					<div className={styles.cell}>
 						<Input
-							value={name}
-							name="name"
-							onChange={handleUpdate}
-						/>
-					</div>
-					<div className={styles.cell}>
-						<Input
-							value={hp}
-							name="hp"
-							onChange={handleUpdate}
-							classname={styles.hpInput}
-						/>
-					</div>
-					<div className={styles.cell}>
-						<Input
 							value={initiative}
 							name="initiative"
 							onChange={handleUpdate}
@@ -119,51 +137,80 @@ export default function Combatant({
 						/>
 					</div>
 					<div className={styles.cell}>
-						<Input
-							value={conditions}
-							name="conditions"
-							onChange={handleUpdate}
-						/>
+						<div className={styles.nameRow}>
+							<Input
+								value={name}
+								name="name"
+								onChange={handleUpdate}
+								classname={styles.nameInput}
+							/>
+						</div>
+						<div className={styles.nameRow}>
+							<TextArea
+								value={conditions}
+								name="conditions"
+								onChange={handleUpdate}
+								classname={styles.textarea}
+								placeholder="Conditions"
+							/>
+						</div>
 					</div>
 					<div className={styles.cell}>
-						<Input
-							value={wounds}
-							name="wounds"
-							onChange={handleUpdate}
-						/>
+						<div className={styles.hpRow}>
+							<Input
+								value={hp}
+								name="hp"
+								onChange={handleUpdate}
+								classname={styles.hpInput}
+							/>
+							<span>/</span>
+							<Input
+								disabled={true}
+								value={hpMax}
+								name="hpMax"
+								classname={styles.hpInput}
+							/>
+						</div>
+						<div className={styles.nameRow}>
+							<TextArea
+								value={wounds}
+								name="wounds"
+								onChange={handleUpdate}
+								classname={styles.textarea}
+								placeholder="Wounds"
+							/>
+						</div>
 					</div>
 					<div className={styles.cell}>
-						<Button
-							variant="outline-secondary"
-							className={styles.button}
-							onClick={handleLock}
-						>
+						<div className={styles.buttonRow}>
+							<Button
+								variant="outline-secondary"
+								className={styles.button}
+								onClick={handleLock}
+							>
 							<FontAwesomeIcon
 								icon={isLocked ? faLock : faLockOpen}
 							/>
 						</Button>
-					</div>
-					<div className={styles.cell}>
-						<Button
-							variant="outline-success"
-							className={styles.button}
-							onClick={handleClone}
-						>
-							<FontAwesomeIcon
-								icon={faCopy}
-							/>
-						</Button>
-					</div>
-					<div className={styles.cell}>
-						<Button
-							variant="outline-danger"
-							className={styles.button}
-							onClick={handleDelete}
-						>
-							<FontAwesomeIcon
-								icon={faTrashAlt}
-							/>
-						</Button>
+							<Button
+								variant="outline-success"
+								className={styles.button}
+								onClick={handleClone}
+							>
+								<FontAwesomeIcon
+									icon={faCopy}
+								/>
+							</Button>
+							<Button
+								variant="outline-danger"
+								className={styles.button}
+								onClick={handleDelete}
+							>
+								<FontAwesomeIcon
+									icon={faTrashAlt}
+								/>
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>

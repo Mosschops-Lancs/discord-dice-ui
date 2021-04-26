@@ -50,21 +50,6 @@ export default function Zone({ name, index }: ZoneProps) {
 			})}>
 				{name}
 			</div>
-			<div className={classNames({
-				[combatantStyles.table]: true,
-				[styles.legend]: true,
-				[styles.legendWaitingRoom]: isWaitingRoom
-			})}>
-				<div className={combatantStyles.cell} />
-				<div className={combatantStyles.cell}>name</div>
-				<div className={combatantStyles.cell}>hp</div>
-				<div className={combatantStyles.cell}>initiative</div>
-				<div className={combatantStyles.cell}>wounds</div>
-				<div className={combatantStyles.cell}>conditions</div>
-				<div className={combatantStyles.cell} />
-				<div className={combatantStyles.cell} />
-				<div className={combatantStyles.cell} />
-			</div>
 			<div>
 				{
 					combatants.map((combatant: CombatantTypes) => <Combatant key={combatant.id} {...combatant} /> )
