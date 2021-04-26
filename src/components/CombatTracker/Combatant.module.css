@@ -15,8 +15,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 1px solid #fff;
-    border-bottom: 1px solid #fff;
+    border-left: 1px solid #e3e3e3;
+    border-top: 1px solid #e3e3e3;
     flex-direction: column;
 }
 
@@ -49,8 +49,6 @@
 .hpRow {
     display: flex;
 }
-
-
 
 .nameInput {
     font-weight: bold;
