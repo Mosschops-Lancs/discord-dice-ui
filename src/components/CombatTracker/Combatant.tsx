@@ -40,6 +40,7 @@ export default function Combatant({
 	const setCombatantZone = useCombatTrackerStore(({ setCombatantZone }) => setCombatantZone);
 	const forceUpdateCombatants = useCombatTrackerStore(({ forceUpdateCombatants }) => forceUpdateCombatants);
 	const deleteCombatant = useCombatTrackerStore(({ deleteCombatant }) => deleteCombatant);
+	const cloneCombatant = useCombatTrackerStore(({ cloneCombatant }) => cloneCombatant);
 	const updateCombatant = useCombatTrackerStore(({ updateCombatant }) => updateCombatant);
 	const lockCombatant = useCombatTrackerStore(({ lockCombatant }) => lockCombatant);
 	const hoverZone = useCombatTrackerStore(({ hoverZone }) => hoverZone);
@@ -59,6 +60,10 @@ export default function Combatant({
 
 	const handleDelete = () => {
 		deleteCombatant(id);
+	};
+
+	const handleClone = () => {
+		cloneCombatant(id);
 	};
 
 	const handleLock = () => {
@@ -142,6 +147,7 @@ export default function Combatant({
 						<Button
 							variant="outline-success"
 							className={styles.button}
+							onClick={handleClone}
 						>
 							<FontAwesomeIcon
 								icon={faCopy}

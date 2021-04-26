@@ -1,6 +1,6 @@
 import create from 'zustand';
 import { persist } from "zustand/middleware"
-import { createCombatant } from "./utils/utils";
+import { createCombatant, createCombatantId } from "./utils/utils";
 
 export interface CreateCombatant {
     name: string;
@@ -33,6 +33,7 @@ type State = {
     addZone: (name: string) => void
     addCombatant: (data: CreateCombatant) => void
     deleteCombatant: (id: number) => void
+    cloneCombatant: (id: number) => void
     updateCombatant: (
         id: number,
         field: CombatantTypesEditableFields,
@@ -64,10 +65,24 @@ const useStore = create<State>(persist((set => ({
     deleteCombatant: (combatantId) => {
         set((state) => set({ combatants: state.combatants.filter(({ id }) => id !== combatantId) }));
     },
+    cloneCombatant: (combatantId) => {
+        set((state) => {
+            const combatant = state.combatants.find(c => combatantId === c.id) as CombatantTypes;
+
+            const newCombatant = {
+                ...combatant,
+                id: createCombatantId()
+            };
+
+            const combatants = [...state.combatants, newCombatant];
+
+            set({ combatants });
+        });
+    },
     updateCombatant: (combatantId, field, value) => {
         set((state) => {
-            const combatant = state.combatants.find(c => c.id) as CombatantTypes;
-            const combatantIndex = state.combatants.findIndex(c => c.id);
+            const combatant = state.combatants.find(c => combatantId === c.id) as CombatantTypes;
+            const combatantIndex = state.combatants.findIndex(c => combatantId === c.id);
             let newValue;
 
             if (field === 'hp' || field ===  'initiative') {
@@ -85,15 +100,6 @@ const useStore = create<State>(persist((set => ({
             set({
                 combatants: newCombatants
             });
-
-            // set({
-            //     combatants: state.combatants.map(c => {
-            //         if (c.id === combatantId) {
-            //             return combatant;
-            //         }
-            //         return c;
-            //     })
-            // })
         });
     },
     lockCombatant: (combatantId) => {
