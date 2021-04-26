@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import classNames from "classnames";
 import Button from "react-bootstrap/Button";
 import useCombatTrackerStore from "./store";
 import styles from './AddCombatant.module.css';
@@ -37,22 +38,28 @@ export default function AddCombatant({ zoneIndex }: AddCombatantProps) {
 	return (
 		<form onSubmit={handleAddCombatant} className={styles.container}>
 			<input
+				name="initiative"
+				type="text"
+				value={initiative}
+				placeholder="Initiative"
+				className={classNames([styles.input, styles.initiativeInput])}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitiative(e.target.value)}
+			/>
+			<input
 				name="name"
 				type="text"
 				value={name}
+				placeholder="Combatant's Name"
+				className={classNames([styles.input, styles.nameInput])}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
 			/>
 			<input
 				name="hp"
 				type="text"
 				value={hp}
+				placeholder="HP"
+				className={classNames([styles.input, styles.hpInput])}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setHp(e.target.value)}
-			/>
-			<input
-				name="initiative"
-				type="text"
-				value={initiative}
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitiative(e.target.value)}
 			/>
 			<Button variant="primary" size="sm" type="submit">
 				Add Combatant

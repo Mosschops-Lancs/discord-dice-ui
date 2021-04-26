@@ -1,3 +1,30 @@
 .container {
-    margin: 10px 0;
+    margin: 0 0 10px;
+    border-top: 1px solid #c6c6c6;
+    padding-top: 10px;
+    padding-left: 15px;
+    display: flex;
+}
+
+.input {
+    margin-right: 5px;
+    border: 1px solid #828282;
+    border-radius: 2px;
+    padding: 0 4px;
+}
+
+.initiativeInput {
+    width: 110px;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+.nameInput {
+    width: 245px;
+}
+
+.hpInput {
+    width: 65px;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    text-align: center;
 }

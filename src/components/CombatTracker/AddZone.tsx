@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import useCombatTrackerStore from "./store";
+import styles from './AddZone.module.css'
 
 export default function AddZone() {
 	const [zoneName, setZoneName] = useState('');
@@ -15,11 +16,13 @@ export default function AddZone() {
 		}
 	};
 	return (
-		<form onSubmit={handleAddZone}>
+		<form onSubmit={handleAddZone} className={styles.container}>
 			<input
 				name="addZone"
 				type="text"
 				value={zoneName}
+				className={styles.input}
+				placeholder="Zone's Name"
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setZoneName(e.target.value)}
 			/>
 			<Button variant="primary" size="sm" type="submit">

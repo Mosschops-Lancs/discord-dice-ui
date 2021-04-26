@@ -4,7 +4,6 @@ import styles from './Zone.module.css';
 import AddCombatant from "./AddCombatant";
 import useCombatTrackerStore, { CombatantTypes } from "./store";
 import Combatant from "./Combatant";
-import combatantStyles from './Combatant.module.css';
 
 interface ZoneProps {
 	name: string;
