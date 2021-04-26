@@ -14,6 +14,7 @@ interface InputProps {
 	name: string;
 	// onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	onChange?: (event: any) => void;
+	onKeyPress?: (event: any) => void;
 	placeholder?: string;
 	disabled?: boolean;
 }
@@ -23,6 +24,7 @@ function Input ({
 	classname,
 	name,
 	onChange,
+	onKeyPress,
 	placeholder = '',
 	disabled = false
 }: InputProps) {
@@ -34,6 +36,7 @@ function Input ({
 			onChange={onChange}
 			placeholder={placeholder}
 			disabled={disabled}
+			onKeyPress={onKeyPress}
 		/>
 	);
 }
@@ -43,6 +46,7 @@ function TextArea ({
 	classname,
 	name,
 	onChange,
+	onKeyPress,
 	placeholder = '',
 	disabled = false
 }: InputProps) {
@@ -52,10 +56,40 @@ function TextArea ({
 			name={name}
 			value={value}
 			onChange={onChange}
+			onKeyPress={onKeyPress}
 			placeholder={placeholder}
 			disabled={disabled}
 		/>
 	);
+}
+
+interface HpCounterProps {
+	hp: number;
+	hpMax: number;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	onKeyPress: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+function HpCounter ({ hp, hpMax, onChange, onKeyPress } : HpCounterProps) {
+	return (
+		<div className={styles.hpCounter}>
+			<Input
+				onKeyPress={onKeyPress}
+				value={hp}
+				name="hp"
+				onChange={onChange}
+				classname={classNames([styles.hpInput, styles.hpInputLeft])}
+			/>
+			<span>/</span>
+			<Input
+				onKeyPress={onKeyPress}
+				disabled={true}
+				value={hpMax}
+				name="hpMax"
+				classname={classNames([styles.hpInput, styles.hpInputRight])}
+			/>
+		</div>
+	)
 }
 
 export default function Combatant({
@@ -111,6 +145,13 @@ export default function Combatant({
 		);
 	};
 
+	// const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyPress = (event: any) => {
+		if (event.key === 'Enter') {
+			event.target.blur();
+		}
+	}
+
 	return (
 		<Draggable
 			handle=".handle"
@@ -130,6 +171,7 @@ export default function Combatant({
 					</div>
 					<div className={styles.cell}>
 						<Input
+							onKeyPress={handleKeyPress}
 							value={initiative}
 							name="initiative"
 							onChange={handleUpdate}
@@ -139,6 +181,7 @@ export default function Combatant({
 					<div className={styles.cell}>
 						<div className={styles.nameRow}>
 							<Input
+								onKeyPress={handleKeyPress}
 								value={name}
 								name="name"
 								onChange={handleUpdate}
@@ -148,6 +191,7 @@ export default function Combatant({
 						<div className={styles.nameRow}>
 							<TextArea
 								value={conditions}
+								onKeyPress={handleKeyPress}
 								name="conditions"
 								onChange={handleUpdate}
 								classname={styles.textarea}
@@ -157,18 +201,11 @@ export default function Combatant({
 					</div>
 					<div className={styles.cell}>
 						<div className={styles.hpRow}>
-							<Input
-								value={hp}
-								name="hp"
+							<HpCounter
+								hp={hp}
+								hpMax={hpMax}
 								onChange={handleUpdate}
-								classname={styles.hpInput}
-							/>
-							<span>/</span>
-							<Input
-								disabled={true}
-								value={hpMax}
-								name="hpMax"
-								classname={styles.hpInput}
+								onKeyPress={handleKeyPress}
 							/>
 						</div>
 						<div className={styles.nameRow}>
@@ -176,6 +213,7 @@ export default function Combatant({
 								value={wounds}
 								name="wounds"
 								onChange={handleUpdate}
+								onKeyPress={handleKeyPress}
 								classname={styles.textarea}
 								placeholder="Wounds"
 							/>

@@ -4,7 +4,7 @@
 
 .table {
     display: grid;
-    grid-template-columns: 0.25fr 0.25fr 2fr 2fr 1fr;
+    grid-template-columns: 0.25fr 0.25fr 2fr 1fr 1fr;
 }
 
 .dragHandle {
@@ -12,7 +12,6 @@
 }
 
 .cell {
-    /*height: 25px;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,8 +41,7 @@
     background: transparent;
 }
 
-.initiativeInput,
-.hpInput {
+.initiativeInput {
     text-align: center;
 }
 
@@ -52,12 +50,11 @@
     display: flex;
 }
 
-.hpInput {
-    width: auto;
-}
+
 
 .nameInput {
     font-weight: bold;
+    font-size: 15px;
 }
 
 .button {
@@ -84,4 +81,27 @@
 :global(.react-draggable-dragging) .input{
     background: #eeeeee;
 }
+
+.hpCounter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+}
+
+.hpInput {
+    width: auto;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.hpInputLeft {
+    text-align: right;
+}
+
+.hpInputRight {
+    text-align: left;
+}
+
 
