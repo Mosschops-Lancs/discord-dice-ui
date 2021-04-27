@@ -21,7 +21,7 @@ export default function AddCombatant({ zoneIndex }: AddCombatantProps) {
 		const hpNum = parseInt(hp, 10);
 		const initiativeNum = parseInt(initiative, 10);
 
-		if (name && hpNum && initiativeNum) {
+		if (name && hpNum && initiativeNum >= 0) {
 			addCombatant({
 				name,
 				hp: hpNum,

@@ -47,6 +47,13 @@ type State = {
     clearState: () => void
 }
 
+const getIncreasedRenders = (renders: number) => {
+    if (renders >= 100) {
+        return 1;
+    }
+    return renders + 1;
+}
+
 const useStore = create<State>(persist((set => ({
     renders: 0,
     isModalOpen: false,
@@ -118,12 +125,12 @@ const useStore = create<State>(persist((set => ({
                 }
                 return combatant;
             });
-            set({ combatants, renders: state.renders + 1 })
+            set({ combatants, renders: getIncreasedRenders(state.renders) })
         });
     },
     setIsDragging: (dragState) => set({ isDragging: dragState }),
     setHoverZone: (zoneIndex) => set({ hoverZone: zoneIndex }),
-    forceUpdateCombatants: () => set((state) => set({ renders: state.renders + 1 })),
+    forceUpdateCombatants: () => set((state) => set({ renders: getIncreasedRenders(state.renders) })),
     clearState: () => set(({ combatants }) => set({
         zones: [],
         combatants: combatants.filter(c => c.isLocked).map(c => {
