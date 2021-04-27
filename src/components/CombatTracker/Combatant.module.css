@@ -4,7 +4,11 @@
 
 .table {
     display: grid;
-    grid-template-columns: 0.25fr 0.25fr 2fr 1fr 1fr;
+    grid-template-columns: 0.25fr 0.25fr 2.5fr 1fr 1fr;
+}
+
+.tableWithAdvantage {
+    grid-template-columns: 0.25fr 0.25fr 2.25fr 0.25fr 1fr 1fr;
 }
 
 .dragHandle {
@@ -13,18 +17,22 @@
 
 .cell {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     border-left: 1px solid #c6c6c6;
     border-top: 1px solid #c6c6c6;
     flex-direction: column;
 }
 
+.cellCenter {
+    justify-content: center;
+}
+
 .cell:first-of-type {
     border-left: 0;
 }
 
-.nameRow {
+.textareaContainer {
     width: 100%;
 }
 
@@ -43,6 +51,16 @@
 
 .initiativeInput {
     text-align: center;
+    height: 30px;
+}
+
+.initiativeLabel {
+    color: #6e6e6e;
+    font-size: 11px;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
 }
 
 .buttonRow,
@@ -53,6 +71,7 @@
 .nameInput {
     font-weight: bold;
     font-size: 15px;
+    height: 30px;
 }
 
 .button {
@@ -102,5 +121,3 @@
     text-align: left;
     color: #6e6e6e;
 }
-
-

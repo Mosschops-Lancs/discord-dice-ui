@@ -15,6 +15,7 @@ export interface CombatantTypes extends CreateCombatant {
     id: number;
     isLocked: boolean;
     hpMax: number;
+    advantage: number;
 }
 
 type ZoneIndex = number | null;

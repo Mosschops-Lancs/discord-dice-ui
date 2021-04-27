@@ -7,6 +7,9 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faGripHorizontal, faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
+import { validateCombatantFields } from "./utils/utils";
+import { useSelector } from "react-redux";
+import { reducer as form } from "redux-form/lib/reducer";
 
 interface InputProps {
 	value: string | number;
@@ -101,7 +104,8 @@ export default function Combatant({
 	id,
 	zoneIndex,
 	isLocked,
-	hpMax
+	hpMax,
+	advantage
 }: CombatantTypes) {
 	const setIsDragging = useCombatTrackerStore(({ setIsDragging }) => setIsDragging);
 	const setCombatantZone = useCombatTrackerStore(({ setCombatantZone }) => setCombatantZone);
@@ -112,9 +116,13 @@ export default function Combatant({
 	const lockCombatant = useCombatTrackerStore(({ lockCombatant }) => lockCombatant);
 	const hoverZone = useCombatTrackerStore(({ hoverZone }) => hoverZone);
 
+	const diceModuleForm = useSelector(({ form }: any) => form.diceModuleForm?.values);
+	const showAdvantage = diceModuleForm?.warhammerMode;
+
 	const handleStart = () => {
 		setIsDragging(true);
 	};
+
 	const handleStop = () => {
 		setIsDragging(false);
 
@@ -137,18 +145,18 @@ export default function Combatant({
 		lockCombatant(id);
 	};
 
-	const validate = () => {
-		let error = ''
-
-		return error;
-	};
-
 	const handleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
-		updateCombatant(
-			id,
-			event.target.name as CombatantTypesEditableFields,
-			event.target.value
-		);
+		const error = validateCombatantFields({
+			[event.target.name]: event.target.value
+		});
+
+		if (!error) {
+			updateCombatant(
+				id,
+				event.target.name as CombatantTypesEditableFields,
+				event.target.value
+			);
+		}
 	};
 
 	// const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -165,9 +173,13 @@ export default function Combatant({
 			onStop={handleStop}
 		>
 			<div className={styles.container}>
-				<div className={styles.table}>
+				<div className={classNames({
+					[styles.table]: true,
+					[styles.tableWithAdvantage]: showAdvantage
+				})}>
 					<div className={classNames({
 						[styles.cell]: true,
+						[styles.cellCenter]: true,
 						[styles.dragHandle]: true,
 						"handle": true
 					})}>
@@ -176,16 +188,19 @@ export default function Combatant({
 						/>
 					</div>
 					<div className={styles.cell}>
-						<Input
-							onKeyPress={handleKeyPress}
-							value={initiative}
-							name="initiative"
-							onChange={handleUpdate}
-							classname={styles.initiativeInput}
-						/>
+						<div>
+							<Input
+								onKeyPress={handleKeyPress}
+								value={initiative}
+								name="initiative"
+								onChange={handleUpdate}
+								classname={styles.initiativeInput}
+							/>
+							<div className={styles.initiativeLabel}>Ini</div>
+						</div>
 					</div>
 					<div className={styles.cell}>
-						<div className={styles.nameRow}>
+						<div className={styles.textareaContainer}>
 							<Input
 								onKeyPress={handleKeyPress}
 								value={name}
@@ -194,7 +209,7 @@ export default function Combatant({
 								classname={styles.nameInput}
 							/>
 						</div>
-						<div className={styles.nameRow}>
+						<div className={styles.textareaContainer}>
 							<TextArea
 								value={conditions}
 								onKeyPress={handleKeyPress}
@@ -205,6 +220,19 @@ export default function Combatant({
 							/>
 						</div>
 					</div>
+					{ showAdvantage && <div className={styles.cell}>
+						 <div>
+							<Input
+								onKeyPress={handleKeyPress}
+								value={advantage}
+								name="advantage"
+								onChange={handleUpdate}
+								placeholder="0"
+								classname={styles.initiativeInput}
+							/>
+							<div className={styles.initiativeLabel}>Adv</div>
+						</div>
+					</div> }
 					<div className={styles.cell}>
 						<div className={styles.hpRow}>
 							<HpCounter
@@ -214,7 +242,7 @@ export default function Combatant({
 								onKeyPress={handleKeyPress}
 							/>
 						</div>
-						<div className={styles.nameRow}>
+						<div className={styles.textareaContainer}>
 							<TextArea
 								value={wounds}
 								name="wounds"
@@ -225,7 +253,7 @@ export default function Combatant({
 							/>
 						</div>
 					</div>
-					<div className={styles.cell}>
+					<div className={classNames([styles.cell, styles.cellCenter])}>
 						<div className={styles.buttonRow}>
 							<Button
 								variant="outline-secondary"
