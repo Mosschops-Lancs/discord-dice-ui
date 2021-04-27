@@ -137,6 +137,12 @@ export default function Combatant({
 		lockCombatant(id);
 	};
 
+	const validate = () => {
+		let error = ''
+
+		return error;
+	};
+
 	const handleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
 		updateCombatant(
 			id,

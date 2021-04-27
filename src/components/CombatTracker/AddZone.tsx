@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import useCombatTrackerStore from "./store";
 import styles from './AddZone.module.css'
+import { zoneNameMaxLength } from "./consts";
 
 export default function AddZone() {
 	const [zoneName, setZoneName] = useState('');
@@ -13,7 +14,7 @@ export default function AddZone() {
 
 		if (!zoneName) {
 			error = 'Zone name cannot be empty';
-		} else if (name.length > 60)
+		} else if (name.length > zoneNameMaxLength)
 			error = 'Zone name is too long';
 		return error;
 	}
