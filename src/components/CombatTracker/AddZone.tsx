@@ -5,17 +5,31 @@ import styles from './AddZone.module.css'
 
 export default function AddZone() {
 	const [zoneName, setZoneName] = useState('');
+	const [error, setError] = useState('');
 	const addZone: (name: string) => void = useCombatTrackerStore(({ addZone }) => addZone);
+
+	const validate = (name: string) => {
+		let error = ''
+
+		if (!zoneName) {
+			error = 'Zone name cannot be empty';
+		} else if (name.length > 60)
+			error = 'Zone name is too long';
+		return error;
+	}
 
 	const handleAddZone = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		const zoneNameTrimmed = zoneName.trim();
+		const error = validate(zoneNameTrimmed);
 
-		if (zoneNameTrimmed && zoneNameTrimmed.length < 60) {
+		if (!error) {
 			setZoneName('');
 			addZone(zoneNameTrimmed);
 		}
+
+		setError(error);
 	};
 	return (
 		<form onSubmit={handleAddZone} className={styles.container}>
@@ -30,6 +44,7 @@ export default function AddZone() {
 			<Button variant="primary" size="sm" type="submit">
 				Add Zone
 			</Button>
+			<div className={styles.errorContainer}>{error}</div>
 		</form>
 	);
 }

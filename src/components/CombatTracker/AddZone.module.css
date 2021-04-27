@@ -2,6 +2,7 @@
     margin: 20px 0 10px;
     padding-left: 15px;
     display: flex;
+    align-items: center;
 }
 
 .input {
@@ -10,4 +11,11 @@
     border: 1px solid #828282;
     border-radius: 2px;
     padding: 0 4px;
+}
+
+.errorContainer {
+    padding-left: 10px;
+    font-size: 13px;
+    color: red;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
 }
