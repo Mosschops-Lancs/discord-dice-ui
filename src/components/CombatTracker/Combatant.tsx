@@ -83,9 +83,9 @@ function HpCounter ({ hp, hpMax, onChange, onKeyPress } : HpCounterProps) {
 			<span>/</span>
 			<Input
 				onKeyPress={onKeyPress}
-				disabled={true}
 				value={hpMax}
 				name="hpMax"
+				onChange={onChange}
 				classname={classNames([styles.hpInput, styles.hpInputRight])}
 			/>
 		</div>

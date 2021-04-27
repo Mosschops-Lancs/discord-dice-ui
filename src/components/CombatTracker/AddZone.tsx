@@ -10,9 +10,11 @@ export default function AddZone() {
 	const handleAddZone = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (zoneName) {
+		const zoneNameTrimmed = zoneName.trim();
+
+		if (zoneNameTrimmed && zoneNameTrimmed.length < 60) {
 			setZoneName('');
-			addZone(zoneName);
+			addZone(zoneNameTrimmed);
 		}
 	};
 	return (

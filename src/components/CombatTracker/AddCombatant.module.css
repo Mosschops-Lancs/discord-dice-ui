@@ -1,5 +1,5 @@
 .container {
-    margin: 0 0 10px;
+    margin: 0 0 1px;
     border-top: 1px solid #c6c6c6;
     padding-top: 10px;
     padding-left: 15px;
@@ -20,11 +20,20 @@
 }
 
 .nameInput {
-    width: 245px;
+    width: 260px;
 }
 
 .hpInput {
     width: 65px;
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
     text-align: center;
+}
+
+.errorContainer {
+    height: 20px;
+    padding-left: 15px;
+    font-size: 13px;
+    margin-bottom: 3px;
+    color: red;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
 }
