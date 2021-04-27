@@ -9,7 +9,6 @@ import { faTrashAlt, faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faGripHorizontal, faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 import { validateCombatantFields } from "./utils/utils";
 import { useSelector } from "react-redux";
-import { reducer as form } from "redux-form/lib/reducer";
 
 interface InputProps {
 	value: string | number;

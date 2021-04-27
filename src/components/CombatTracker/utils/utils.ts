@@ -68,3 +68,7 @@ export const validateCombatantFields = ({
 
 	return error;
 };
+
+export const chunkString = (str: string, size: number) => {
+	return str.match(new RegExp('.{1,' + size + '}', 'g')) || [];
+}
