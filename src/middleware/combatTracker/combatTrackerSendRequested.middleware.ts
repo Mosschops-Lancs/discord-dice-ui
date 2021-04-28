@@ -12,7 +12,7 @@ export default (store: any) => (next: any) => (action: any) => {
 		const combatTrackerState = useCombatTrackerStore.getState();
 		const { combatants, zones } = combatTrackerState;
 
-		const longestName = combatants.reduce((acc, c) => Math.max(acc, c.name.length), 10);
+		const longestName = combatants.reduce((acc, c) => Math.max(acc, c.name.length), 12);
 
 		const longestInitiative = combatants.reduce((acc, c) => {
 			return Math.max(acc, `${c.initiative}`.length);
@@ -26,13 +26,16 @@ export default (store: any) => (next: any) => (action: any) => {
 			? combatants.reduce((acc, c) => Math.max(acc, ` (${c.advantage})`.length), 0)
 			: 0;
 
+		const showWounds = !!combatants.filter(c => c.wounds?.length > 0).length;
+		const woundsPad = 20;
+
 		let description = '';
 
 		zones.forEach((zoneName, currentZone) => {
 			description += '```md\n';
 			description += zoneName;
 			description += '\n';
-			description += '=============================\n';
+			description += `${'='.repeat( (showWounds ? woundsPad + 3 : 11) + longestName + longestAdvantage + longestHP)}\n`;
 
 			const zoneCombatants = combatants
 				.filter(c => c.zoneIndex === currentZone)
@@ -42,14 +45,14 @@ export default (store: any) => (next: any) => (action: any) => {
 				const initiative = `${c.initiative}`.padStart(longestInitiative);
 				const name = `${c.name}${showAdvantage ? ` (${c.advantage})` : ''}`
 					.padEnd(longestName + longestAdvantage);
-				const hp = `${c.hp}/${c.hpMax}`.padStart(longestHP);
+				const hp = `${c.hp}/${c.hpMax}`.padStart(showWounds ? woundsPad - 3 : longestHP);
 
 				description += `${initiative} | ${name} | ${hp} HP\n`;
 
 				// Now add Conditions and Wounds
 				if (c.conditions || c.wounds) {
-					const conditionsChunks = chunkString(c.conditions, longestName);
-					const woundsChunks = chunkString(c.wounds, 10);
+					const conditionsChunks = chunkString(c.conditions, longestName + longestAdvantage);
+					const woundsChunks = chunkString(c.wounds,woundsPad);
 
 					const additionalLines = Math.max(conditionsChunks.length, woundsChunks.length);
 					const initiativePlaceholder = ' '.repeat(initiative.length) + ' | '
@@ -57,7 +60,7 @@ export default (store: any) => (next: any) => (action: any) => {
 					for (let line = 0; line < additionalLines; line += 1) {
 						const conditions = conditionsChunks[line] || '';
 						const wounds = woundsChunks[line] || '';
-						description += `${initiativePlaceholder}${conditions.padEnd(longestName + longestAdvantage)} | ${wounds}\n`;
+						description += `${initiativePlaceholder}${conditions.padEnd(longestName + longestAdvantage)} | ${wounds.padStart(showWounds ? woundsPad : 0)}\n`;
 					}
 				}
 
