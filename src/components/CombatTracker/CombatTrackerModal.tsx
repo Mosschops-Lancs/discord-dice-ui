@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -17,6 +17,10 @@ function CombatTrackerModal() {
 	const renders: () => void = useCombatTrackerStore(({ renders }) => renders);
 
 	const handleSend = () => {
+		dispatch(combatTrackerSend());
+	};
+
+	const handleSendAndClose = () => {
 		dispatch(combatTrackerSend());
 		closeModal();
 	};
@@ -50,6 +54,9 @@ function CombatTrackerModal() {
 				</Button>
 				<Button variant="outline-secondary" onClick={closeModal}>
 					Close
+				</Button>
+				<Button variant="outline-success" onClick={handleSendAndClose}>
+					Send and Close
 				</Button>
 				<Button variant="success" onClick={handleSend}>
 					Send

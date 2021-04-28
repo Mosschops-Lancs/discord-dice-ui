@@ -3,7 +3,6 @@ import classNames from "classnames";
 import Button from "react-bootstrap/Button";
 import useCombatTrackerStore from "./store";
 import styles from './AddCombatant.module.css';
-import { combatantLengthMax, hpMaxValue, initiativeMaxValue } from "./consts";
 import { validateCombatantFields } from "./utils/utils";
 
 interface AddCombatantProps {
